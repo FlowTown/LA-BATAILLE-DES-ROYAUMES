@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>La Nuit Magique — Les 8 Royaumes</title>
+  <style>
+    :root {
+      --bg: #07070b;
+      --bg-soft: rgba(255,255,255,0.06);
+      --line: rgba(255,255,255,0.12);
+      --text: #f5efe2;
+      --muted: #bdb5a7;
+      --gold: #d8b46a;
+      --shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top, rgba(216,180,106,0.12), transparent 35%),
+        radial-gradient(circle at 20% 20%, rgba(122, 82, 255, 0.08), transparent 20%),
+        radial-gradient(circle at 80% 30%, rgba(65, 150, 255, 0.08), transparent 20%),
+        linear-gradient(180deg, #090910 0%, #050507 100%);
+      min-height: 100vh;
+    }
+
+    .container {
+      width: min(1200px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    header {
+      padding: 24px 0;
+      border-bottom: 1px solid var(--line);
+      background: rgba(5, 5, 7, 0.85);
+      position: sticky;
+      top: 0;
+      backdrop-filter: blur(8px);
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    h1, h2, h3, h4, p {
+      margin-top: 0;
+    }
+
+    .brand h1 {
+      margin-bottom: 6px;
+      font-size: clamp(1.7rem, 3vw, 2.5rem);
+    }
+
+    .brand p {
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .btn {
+      border: 1px solid rgba(216,180,106,0.35);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      padding: 14px 18px;
+      border-radius: 14px;
+      text-decoration: none;
+      font-weight: bold;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      background: linear-gradient(180deg, rgba(216,180,106,0.22), rgba(216,180,106,0.08));
+    }
+
+    .hero {
+      text-align: center;
+      padding: 70px 0 40px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 8px 14px;
+      border: 1px solid rgba(216,180,106,0.3);
+      border-radius: 999px;
+      color: var(--gold);
+      background: rgba(216,180,106,0.08);
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    .hero h2 {
+      margin-bottom: 16px;
+      font-size: clamp(2.2rem, 6vw, 4.7rem);
+      line-height: 1;
+    }
+
+    .hero p {
+      max-width: 760px;
+      margin: 0 auto 24px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .section {
+      padding: 28px 0;
+    }
+
+    .section-title {
+      margin-bottom: 18px;
+    }
+
+    .section-title p {
+      color: var(--muted);
+      margin-bottom: 0;
+    }
+
+    .podium {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03));
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .rank {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.18);
+      margin-bottom: 12px;
+      color: var(--gold);
+      font-weight: bold;
+    }
+
+    .score {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: bold;
+      margin: 0;
+    }
+
+    .sub {
+      color: var(--muted);
+      margin-top: 8px;
+      font-size: 0.95rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .forms {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .field {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    label {
+      color: #eee2c3;
+      font-size: 0.95rem;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.28);
+      color: var(--text);
+      border-radius: 14px;
+      padding: 14px;
+      font: inherit;
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .help {
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .point-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .point-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.03);
+    }
+
+    .footer {
+      padding: 30px 0 60px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .green { box-shadow: inset 0 0 0 1px rgba(40, 190, 115, 0.35); }
+    .gold { box-shadow: inset 0 0 0 1px rgba(216,180,106,0.35); }
+    .red { box-shadow: inset 0 0 0 1px rgba(205, 66, 66, 0.35); }
+    .black { box-shadow: inset 0 0 0 1px rgba(160,160,160,0.25); }
+    .bordeaux { box-shadow: inset 0 0 0 1px rgba(123, 36, 72, 0.4); }
+    .blue { box-shadow: inset 0 0 0 1px rgba(72, 165, 255, 0.35); }
+    .violet { box-shadow: inset 0 0 0 1px rgba(145, 96, 255, 0.35); }
+    .orange { box-shadow: inset 0 0 0 1px rgba(255, 149, 53, 0.35); }
+
+    @media (max-width: 1080px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+      .forms { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 760px) {
+      .podium { grid-template-columns: 1fr; }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container topbar">
+      <div class="brand">
+        <h1>La Nuit Magique</h1>
+        <p>Classement des 8 Royaumes et demandes de points</p>
+      </div>
+      <a href="#demande" class="btn">Demander des points</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <span class="eyebrow">Coupe des Royaumes</span>
+      <h2>Huit Royaumes. Une seule légende.</h2>
+      <p>
+        Suivez le classement des Royaumes de La Nuit Magique. Chaque action accomplie
+        peut faire évoluer votre camp. Les demandes sont envoyées puis vérifiées avant validation.
+      </p>
+      <div class="actions">
+        <a href="#classement" class="btn btn-primary">Voir le classement</a>
+        <a href="#demande" class="btn">Envoyer une demande</a>
+      </div>
+    </section>
+
+    <section class="section" id="classement">
+      <div class="section-title">
+        <h3>Classement actuel</h3>
+        <p>Tout le monde commence à 0 point.</p>
+      </div>
+
+      <div class="podium">
+        <article class="card gold">
+          <div class="rank">1</div>
+          <h4>Augustus Nubium Mundus</h4>
+          <p class="score">0</p>
+          <p class="sub">Royaume d'or</p>
+        </article>
+
+        <article class="card green">
+          <div class="rank">2</div>
+          <h4>Alcarah</h4>
+          <p class="score">0</p>
+          <p class="sub">Royaume vert</p>
+        </article>
+
+        <article class="card red">
+          <div class="rank">3</div>
+          <h4>Baldezor</h4>
+          <p class="score">0</p>
+          <p class="sub">Royaume rouge</p>
+        </article>
+      </div>
+
+      <div class="grid">
+        <article class="card green">
+          <h4>Alcarah</h4>
+          <p class="score">0</p>
+          <div class="meta"><span>Couleur</span><strong>Vert</strong></div>
+        </article>
+
+        <article class="card gold">
+          <h4>Augustus Nubium Mundus</h4>
+          <p class="score">0</p>
+          <div class="meta"><span>Couleur</span><strong>Or</strong></div>
+        </article>
+
+        <article class="card red">
+          <h4>Baldezor</h4>
+          <p class="score">0</p>
+          <div class="meta"><span>Couleur</span><strong>Rouge</strong></div>
+        </article>
+
+        <article class="card black">
+          <h4>Les Ombres de Grimelfe</h4>
+          <p class="score">0</p>
+          <div class="meta"><span>Couleur</span><strong>Noir</strong></div>
+        </article>
+
+        <article class="card bordeaux">
+          <h4>Lunerei</h4>
+          <p class="score">0</p>
+          <div class="meta"><span>Couleur</span><strong>Bordeaux</strong></div>
+        </article>
+
+        <article class="card blue">
+          <h4>Sappheiros</h4>
+          <p class="score">0</p>
+          <div class="meta"><span>Couleur</span><strong>Bleu clair</strong></div>
+        </article>
+
+        <article class="card violet">
+          <h4>Les Terres de Sang</h4>
+          <p class="score">0</p>
+          <div class="meta"><span>Couleur</span><strong>Violet</strong></div>
+        </article>
+
+        <article class="card orange">
+          <h4>Témeriah</h4>
+          <p class="score">0</p>
+          <div class="meta"><span>Couleur</span><strong>Orange</strong></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="demande">
+      <div class="section-title">
+        <h3>Demander des points</h3>
+        <p>La demande sera vérifiée avant d'être validée.</p>
+      </div>
+
+      <div class="forms">
+        <article class="card">
+          <h4>Formulaire public</h4>
+
+          <div class="field">
+            <label for="nom">Nom / pseudo</label>
+            <input id="nom" type="text" placeholder="Ex. Florian" />
+          </div>
+
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" type="email" placeholder="exemple@mail.com" />
+          </div>
+
+          <div class="field">
+            <label for="royaume">Royaume</label>
+            <select id="royaume">
+              <option>Alcarah</option>
+              <option>Augustus Nubium Mundus</option>
+              <option>Baldezor</option>
+              <option>Les Ombres de Grimelfe</option>
+              <option>Lunerei</option>
+              <option>Sappheiros</option>
+              <option>Les Terres de Sang</option>
+              <option>Témeriah</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="action">Action réalisée</label>
+            <select id="action">
+              <option>Venir aider au bureau — 100 points</option>
+              <option>Distribution de flyers — 500 points</option>
+              <option>Amener un nouveau bénévole — 1000 points</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="preuve">Commentaire / preuve</label>
+            <textarea id="preuve" placeholder="Ajoute un détail, une date, ou un lien vers une photo."></textarea>
+          </div>
+
+          <a href="#" class="btn btn-primary">Envoyer la demande</a>
+        </article>
+
+        <aside class="card">
+          <h4>Actions disponibles</h4>
+          <p class="help">
+            Base actuelle du système. Ensuite, on ajoutera un vrai enregistrement
+            des demandes et un espace admin pour les valider.
+          </p>
+
+          <div class="point-list">
+            <div class="point-item"><span>Venir aider au bureau</span><strong>100</strong></div>
+            <div class="point-item"><span>Distribution de flyers</span><strong>500</strong></div>
+            <div class="point-item"><span>Amener un nouveau bénévole</span><strong>1000</strong></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer container">
+    La Nuit Magique — Prototype des 8 Royaumes
+  </footer>
+</body>
+</html>
