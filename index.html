@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>La Bataille des Royaumes</title>
+  <style>
+    :root{
+      --bg:#07080d;
+      --bg2:#0d1018;
+      --text:#f5efe5;
+      --muted:#b8b1a5;
+      --gold:#d7b36b;
+      --line:rgba(255,255,255,.10);
+      --panel:rgba(255,255,255,.05);
+      --shadow:0 20px 50px rgba(0,0,0,.35);
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+
+    body{
+      margin:0;
+      font-family:Georgia, "Times New Roman", serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top, rgba(215,179,107,.10), transparent 30%),
+        radial-gradient(circle at 20% 20%, rgba(87,146,255,.08), transparent 18%),
+        radial-gradient(circle at 80% 20%, rgba(165,101,255,.08), transparent 18%),
+        linear-gradient(180deg,var(--bg2),var(--bg));
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      opacity:.25;
+      background-image:
+        radial-gradient(2px 2px at 18% 22%, rgba(255,255,255,.75) 45%, transparent 46%),
+        radial-gradient(1px 1px at 70% 18%, rgba(255,255,255,.5) 45%, transparent 46%),
+        radial-gradient(1.5px 1.5px at 83% 62%, rgba(255,255,255,.45) 45%, transparent 46%),
+        radial-gradient(1px 1px at 14% 78%, rgba(255,255,255,.35) 45%, transparent 46%);
+    }
+
+    img{display:block;max-width:100%}
+    a{text-decoration:none;color:inherit}
+
+    .container{
+      width:min(1240px, calc(100% - 24px));
+      margin:0 auto;
+      position:relative;
+      z-index:1;
+    }
+
+    header{
+      position:sticky;
+      top:0;
+      z-index:20;
+      background:rgba(7,8,13,.70);
+      backdrop-filter:blur(10px);
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+
+    .topbar{
+      min-height:82px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+      padding:12px 0;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+
+    .brand img{
+      width:56px;
+      height:56px;
+      object-fit:contain;
+      filter:drop-shadow(0 10px 18px rgba(0,0,0,.35));
+    }
+
+    .brand h1{
+      margin:0;
+      font-size:clamp(1.1rem,2vw,1.45rem);
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+
+    .brand p{
+      margin:4px 0 0;
+      color:var(--muted);
+      font-size:.88rem;
+    }
+
+    .header-btn,
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:13px 18px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.04);
+      color:var(--text);
+      font-weight:700;
+      box-shadow:var(--shadow);
+    }
+
+    .btn-primary,
+    .header-btn{
+      border-color:rgba(215,179,107,.26);
+      background:linear-gradient(180deg, rgba(215,179,107,.22), rgba(215,179,107,.08));
+    }
+
+    .hero{
+      min-height:calc(100vh - 82px);
+      display:grid;
+      place-items:center;
+      text-align:center;
+      padding:48px 0 36px;
+      position:relative;
+    }
+
+    .hero::after{
+      content:"";
+      position:absolute;
+      left:50%;
+      top:50%;
+      transform:translate(-50%,-50%);
+      width:min(900px,90vw);
+      height:min(900px,90vw);
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(215,179,107,.10), transparent 60%);
+      z-index:-1;
+      pointer-events:none;
+    }
+
+    .eyebrow{
+      display:inline-block;
+      padding:8px 14px;
+      border:1px solid rgba(215,179,107,.28);
+      border-radius:999px;
+      color:var(--gold);
+      background:rgba(215,179,107,.07);
+      font-size:.78rem;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      margin-bottom:20px;
+    }
+
+    .hero-logo{
+      width:min(165px,38vw);
+      margin:0 auto 26px;
+      filter:drop-shadow(0 16px 35px rgba(0,0,0,.35));
+    }
+
+    .hero h2{
+      margin:0 auto 18px;
+      max-width:980px;
+      font-size:clamp(2.7rem,7vw,6.5rem);
+      line-height:.92;
+    }
+
+    .hero p{
+      max-width:760px;
+      margin:0 auto;
+      color:var(--muted);
+      line-height:1.75;
+      font-size:1.02rem;
+    }
+
+    .hero-actions{
+      display:flex;
+      justify-content:center;
+      gap:14px;
+      flex-wrap:wrap;
+      margin-top:30px;
+    }
+
+    .section{
+      padding:40px 0;
+    }
+
+    .section-head{
+      text-align:center;
+      margin-bottom:20px;
+    }
+
+    .section-head h3{
+      margin:0 0 8px;
+      font-size:clamp(1.8rem,4vw,2.8rem);
+    }
+
+    .section-head p{
+      margin:0;
+      color:var(--muted);
+    }
+
+    .scoreboard,
+    .panel{
+      border-radius:28px;
+      background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+      border:1px solid var(--line);
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(10px);
+    }
+
+    .scoreboard{
+      padding:18px;
+    }
+
+    .kingdom-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:16px;
+    }
+
+    .kingdom-card{
+      position:relative;
+      min-height:320px;
+      padding:20px;
+      border-radius:24px;
+      overflow:hidden;
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.035));
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow:var(--shadow);
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      align-items:center;
+      text-align:center;
+    }
+
+    .kingdom-card::after{
+      content:"";
+      position:absolute;
+      inset:auto -10% -18% auto;
+      width:170px;
+      height:170px;
+      border-radius:50%;
+      background:radial-gradient(circle, var(--glow), transparent 68%);
+      opacity:.55;
+      pointer-events:none;
+    }
+
+    .kingdom-logo{
+      width:108px;
+      height:108px;
+      border-radius:22px;
+      display:grid;
+      place-items:center;
+      background:rgba(255,255,255,.035);
+      border:1px solid rgba(255,255,255,.10);
+      margin-bottom:16px;
+      overflow:hidden;
+    }
+
+    .kingdom-logo img{
+      width:88px;
+      height:88px;
+      object-fit:contain;
+      filter:drop-shadow(0 10px 18px rgba(0,0,0,.35));
+    }
+
+    .kingdom-name{
+      margin:0;
+      font-size:1.15rem;
+      line-height:1.2;
+      min-height:2.5em;
+      display:grid;
+      place-items:center;
+    }
+
+    .kingdom-color{
+      margin-top:8px;
+      color:var(--accent);
+      font-size:.84rem;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      font-weight:700;
+    }
+
+    .kingdom-score-wrap{
+      width:100%;
+      margin-top:18px;
+      padding-top:18px;
+      border-top:1px solid rgba(255,255,255,.08);
+    }
+
+    .kingdom-score-label{
+      color:var(--muted);
+      font-size:.8rem;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      margin-bottom:8px;
+    }
+
+    .kingdom-score{
+      margin:0;
+      font-size:2.9rem;
+      line-height:1;
+      font-weight:700;
+    }
+
+    .request-layout{
+      display:grid;
+      grid-template-columns:.9fr 1.1fr;
+      gap:18px;
+    }
+
+    .panel{
+      padding:24px;
+    }
+
+    .panel h4{
+      margin:0 0 12px;
+      font-size:1.35rem;
+    }
+
+    .helper{
+      margin:0;
+      color:var(--muted);
+      line-height:1.7;
+      font-size:.97rem;
+    }
+
+    .point-list{
+      display:grid;
+      gap:12px;
+      margin-top:22px;
+    }
+
+    .point-item{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      padding:14px 16px;
+      border-radius:16px;
+      background:rgba(255,255,255,.035);
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .point-item strong{
+      color:var(--gold);
+      white-space:nowrap;
+    }
+
+    .field{
+      display:grid;
+      gap:8px;
+      margin-bottom:14px;
+    }
+
+    label{
+      font-size:.94rem;
+      color:#f0e4c8;
+    }
+
+    input, select, textarea{
+      width:100%;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(0,0,0,.24);
+      color:var(--text);
+      border-radius:16px;
+      padding:14px;
+      font:inherit;
+      outline:none;
+    }
+
+    textarea{
+      min-height:140px;
+      resize:vertical;
+    }
+
+    .send-row{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap:wrap;
+      margin-top:10px;
+    }
+
+    .tiny{
+      color:var(--muted);
+      font-size:.88rem;
+    }
+
+    .green{--accent:#53d28b;--glow:rgba(83,210,139,.22)}
+    .gold{--accent:#e2bd74;--glow:rgba(226,189,116,.22)}
+    .red{--accent:#e06b6b;--glow:rgba(224,107,107,.22)}
+    .black{--accent:#d8d8d8;--glow:rgba(180,180,180,.16)}
+    .bordeaux{--accent:#b55a7f;--glow:rgba(181,90,127,.22)}
+    .blue{--accent:#79bfff;--glow:rgba(121,191,255,.22)}
+    .violet{--accent:#b284ff;--glow:rgba(178,132,255,.22)}
+    .orange{--accent:#ffaf61;--glow:rgba(255,175,97,.22)}
+
+    @media (max-width:1100px){
+      .kingdom-grid{grid-template-columns:repeat(2,1fr)}
+      .request-layout{grid-template-columns:1fr}
+    }
+
+    @media (max-width:700px){
+      .container{width:min(100% - 18px,1240px)}
+      .hero{min-height:auto;padding-top:34px}
+      .kingdom-grid{grid-template-columns:1fr}
+      .kingdom-card{min-height:280px}
+      .brand img{width:48px;height:48px}
+      .header-btn{width:100%}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container topbar">
+      <div class="brand">
+        <img src="Asset%201.svg" alt="Logo La Nuit Magique">
+        <div>
+          <h1>La Bataille des Royaumes</h1>
+          <p>La Nuit Magique</p>
+        </div>
+      </div>
+      <a class="header-btn" href="#demande">Déclarer une action</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div>
+        <span class="eyebrow">version reboot 1</span>
+        <img class="hero-logo" src="Asset%201.svg" alt="Logo La Nuit Magique">
+        <h2>Que le Royaume le plus dévoué entre dans la légende.</h2>
+        <p>
+          Huit Royaumes. Huit blasons. Une seule bataille. Chaque action accomplie pour La Nuit Magique
+          renforce votre camp et peut faire basculer le destin de la Coupe.
+        </p>
+        <div class="hero-actions">
+          <a href="#classement" class="btn btn-primary">Voir les Royaumes</a>
+          <a href="#demande" class="btn">Demander des points</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="classement">
+      <div class="section-head">
+        <h3>Les 8 Royaumes</h3>
+        <p>Tous les Royaumes commencent à 0. La bataille peut commencer.</p>
+      </div>
+
+      <div class="scoreboard">
+        <div class="kingdom-grid">
+          <article class="kingdom-card green">
+            <div>
+              <div class="kingdom-logo"><img src="Alcarah.png" alt="Logo Alcarah"></div>
+              <h4 class="kingdom-name">Alcarah</h4>
+              <div class="kingdom-color">Vert</div>
+            </div>
+            <div class="kingdom-score-wrap">
+              <div class="kingdom-score-label">Points du Royaume</div>
+              <p class="kingdom-score">0</p>
+            </div>
+          </article>
+
+          <article class="kingdom-card gold">
+            <div>
+              <div class="kingdom-logo"><img src="Augustus%20Nubium%20Mundus.png" alt="Logo Augustus Nubium Mundus"></div>
+              <h4 class="kingdom-name">Augustus Nubium Mundus</h4>
+              <div class="kingdom-color">Or</div>
+            </div>
+            <div class="kingdom-score-wrap">
+              <div class="kingdom-score-label">Points du Royaume</div>
+              <p class="kingdom-score">0</p>
+            </div>
+          </article>
+
+          <article class="kingdom-card red">
+            <div>
+              <div class="kingdom-logo"><img src="Baldezor.png" alt="Logo Baldezor"></div>
+              <h4 class="kingdom-name">Baldezor</h4>
+              <div class="kingdom-color">Rouge</div>
+            </div>
+            <div class="kingdom-score-wrap">
+              <div class="kingdom-score-label">Points du Royaume</div>
+              <p class="kingdom-score">0</p>
+            </div>
+          </article>
+
+          <article class="kingdom-card black">
+            <div>
+              <div class="kingdom-logo"><img src="Grimelfe%20NV.png" alt="Logo Les Ombres de Grimelfe"></div>
+              <h4 class="kingdom-name">Les Ombres de Grimelfe</h4>
+              <div class="kingdom-color">Noir</div>
+            </div>
+            <div class="kingdom-score-wrap">
+              <div class="kingdom-score-label">Points du Royaume</div>
+              <p class="kingdom-score">0</p>
+            </div>
+          </article>
+
+          <article class="kingdom-card bordeaux">
+            <div>
+              <div class="kingdom-logo"><img src="Lunerei.png" alt="Logo Lunerei"></div>
+              <h4 class="kingdom-name">Lunerei</h4>
+              <div class="kingdom-color">Bordeaux</div>
+            </div>
+            <div class="kingdom-score-wrap">
+              <div class="kingdom-score-label">Points du Royaume</div>
+              <p class="kingdom-score">0</p>
+            </div>
+          </article>
+
+          <article class="kingdom-card blue">
+            <div>
+              <div class="kingdom-logo"><img src="Sappheiros.png" alt="Logo Sappheiros"></div>
+              <h4 class="kingdom-name">Sappheiros</h4>
+              <div class="kingdom-color">Bleu clair</div>
+            </div>
+            <div class="kingdom-score-wrap">
+              <div class="kingdom-score-label">Points du Royaume</div>
+              <p class="kingdom-score">0</p>
+            </div>
+          </article>
+
+          <article class="kingdom-card violet">
+            <div>
+              <div class="kingdom-logo"><img src="TDS%20NV.png" alt="Logo Les Terres de Sang"></div>
+              <h4 class="kingdom-name">Les Terres de Sang</h4>
+              <div class="kingdom-color">Violet</div>
+            </div>
+            <div class="kingdom-score-wrap">
+              <div class="kingdom-score-label">Points du Royaume</div>
+              <p class="kingdom-score">0</p>
+            </div>
+          </article>
+
+          <article class="kingdom-card orange">
+            <div>
+              <div class="kingdom-logo"><img src="Temeriah.png" alt="Logo Témeriah"></div>
+              <h4 class="kingdom-name">Témeriah</h4>
+              <div class="kingdom-color">Orange</div>
+            </div>
+            <div class="kingdom-score-wrap">
+              <div class="kingdom-score-label">Points du Royaume</div>
+              <p class="kingdom-score">0</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="demande">
+      <div class="section-head">
+        <h3>Déclarer une action</h3>
+        <p>Chaque demande sera vérifiée avant d'ajouter les points au Royaume concerné.</p>
+      </div>
+
+      <div class="request-layout">
+        <aside class="panel">
+          <h4>Actions reconnues</h4>
+          <p class="helper">
+            Base actuelle de la Coupe des Royaumes.
+          </p>
+
+          <div class="point-list">
+            <div class="point-item">
+              <span>Venir aider au bureau</span>
+              <strong>+100</strong>
+            </div>
+            <div class="point-item">
+              <span>Distribution de flyers</span>
+              <strong>+500</strong>
+            </div>
+            <div class="point-item">
+              <span>Amener un nouveau bénévole</span>
+              <strong>+1000</strong>
+            </div>
+          </div>
+        </aside>
+
+        <article class="panel">
+          <h4>Formulaire de demande</h4>
+
+          <div class="field">
+            <label for="nom">Nom ou pseudo</label>
+            <input id="nom" type="text" placeholder="Ex. Florian">
+          </div>
+
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" type="email" placeholder="exemple@mail.com">
+          </div>
+
+          <div class="field">
+            <label for="royaume">Royaume</label>
+            <select id="royaume">
+              <option>Alcarah</option>
+              <option>Augustus Nubium Mundus</option>
+              <option>Baldezor</option>
+              <option>Les Ombres de Grimelfe</option>
+              <option>Lunerei</option>
+              <option>Sappheiros</option>
+              <option>Les Terres de Sang</option>
+              <option>Témeriah</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="action">Action réalisée</label>
+            <select id="action">
+              <option>Venir aider au bureau — 100 points</option>
+              <option>Distribution de flyers — 500 points</option>
+              <option>Amener un nouveau bénévole — 1000 points</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="preuve">Précision / preuve</label>
+            <textarea id="preuve" placeholder="Ajoute ici une date, un contexte, une précision ou un lien."></textarea>
+          </div>
+
+          <div class="send-row">
+            <a href="#" class="btn btn-primary">Envoyer la demande</a>
+            <span class="tiny">Version visuelle pour l’instant.</span>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
