@@ -17,7 +17,6 @@
       --muted:#b9b2a7;
       --gold:#d6b16a;
       --line:rgba(255,255,255,.08);
-      --panel:rgba(255,255,255,.05);
       --shadow:0 24px 60px rgba(0,0,0,.38);
     }
 
@@ -140,6 +139,7 @@
       letter-spacing:.05em;
       box-shadow:var(--shadow);
       transition:.2s ease;
+      cursor:pointer;
     }
 
     .header-btn:hover,
@@ -278,14 +278,15 @@
         linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03)),
         radial-gradient(circle at 50% 0%, rgba(255,255,255,.04), transparent 30%);
       border:1px solid rgba(255,255,255,.10);
-      box-shadow:
-        inset 0 0 0 1px rgba(255,255,255,.03),
-        0 20px 50px rgba(0,0,0,.32);
       display:flex;
       flex-direction:column;
       justify-content:space-between;
       align-items:center;
       text-align:center;
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.04),
+        0 20px 50px rgba(0,0,0,.32),
+        0 0 30px var(--glow-soft);
     }
 
     .kingdom-card::before{
@@ -297,27 +298,72 @@
         radial-gradient(circle at 78% 30%, rgba(255,255,255,.12) 0 1px, transparent 2px),
         radial-gradient(circle at 26% 74%, rgba(255,255,255,.10) 0 1px, transparent 2px),
         radial-gradient(circle at 68% 82%, rgba(255,255,255,.12) 0 1px, transparent 2px);
-      opacity:.6;
+      opacity:.7;
       pointer-events:none;
     }
 
     .kingdom-card::after{
       content:"";
       position:absolute;
-      inset:auto -10% -18% auto;
-      width:180px;
-      height:180px;
-      border-radius:50%;
-      background:radial-gradient(circle, var(--glow), transparent 68%);
-      opacity:.7;
+      inset:0;
+      border-radius:28px;
+      padding:1px;
+      background:linear-gradient(180deg, var(--border-strong), rgba(255,255,255,.06));
+      -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+      -webkit-mask-composite:xor;
+      mask-composite:exclude;
       pointer-events:none;
+      opacity:.95;
     }
 
-    .kingdom-card.accent{
-      box-shadow:
-        inset 0 0 0 1px var(--border),
-        0 0 0 1px rgba(255,255,255,.04),
-        0 20px 50px rgba(0,0,0,.32);
+    .kingdom-card.accent-green{
+      background:
+        linear-gradient(180deg, rgba(83,210,139,.15), rgba(255,255,255,.03) 28%, rgba(83,210,139,.06)),
+        radial-gradient(circle at 50% 0%, rgba(255,255,255,.05), transparent 30%);
+    }
+
+    .kingdom-card.accent-gold{
+      background:
+        linear-gradient(180deg, rgba(226,189,116,.16), rgba(255,255,255,.03) 28%, rgba(226,189,116,.06)),
+        radial-gradient(circle at 50% 0%, rgba(255,255,255,.05), transparent 30%);
+    }
+
+    .kingdom-card.accent-red{
+      background:
+        linear-gradient(180deg, rgba(224,107,107,.15), rgba(255,255,255,.03) 28%, rgba(224,107,107,.06)),
+        radial-gradient(circle at 50% 0%, rgba(255,255,255,.05), transparent 30%);
+    }
+
+    .kingdom-card.accent-black{
+      background:
+        linear-gradient(180deg, rgba(210,210,210,.10), rgba(255,255,255,.03) 28%, rgba(150,150,150,.05)),
+        radial-gradient(circle at 50% 0%, rgba(255,255,255,.05), transparent 30%);
+    }
+
+    .kingdom-card.accent-bordeaux{
+      background:
+        linear-gradient(180deg, rgba(181,90,127,.16), rgba(255,255,255,.03) 28%, rgba(181,90,127,.06)),
+        radial-gradient(circle at 50% 0%, rgba(255,255,255,.05), transparent 30%);
+    }
+
+    .kingdom-card.accent-blue{
+      background:
+        linear-gradient(180deg, rgba(121,191,255,.16), rgba(255,255,255,.03) 28%, rgba(121,191,255,.06)),
+        radial-gradient(circle at 50% 0%, rgba(255,255,255,.05), transparent 30%);
+    }
+
+    .kingdom-card.accent-violet{
+      background:
+        linear-gradient(180deg, rgba(178,132,255,.16), rgba(255,255,255,.03) 28%, rgba(178,132,255,.06)),
+        radial-gradient(circle at 50% 0%, rgba(255,255,255,.05), transparent 30%);
+    }
+
+    .kingdom-card.accent-orange{
+      background:
+        linear-gradient(180deg, rgba(255,175,97,.16), rgba(255,255,255,.03) 28%, rgba(255,175,97,.06)),
+        radial-gradient(circle at 50% 0%, rgba(255,255,255,.05), transparent 30%);
     }
 
     .kingdom-top{
@@ -334,11 +380,11 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      background:rgba(255,255,255,.035);
-      border:1px solid rgba(255,255,255,.09);
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.11);
       margin:0 auto 18px;
       overflow:hidden;
-      padding:10px;
+      padding:12px;
     }
 
     .kingdom-logo img{
@@ -346,7 +392,6 @@
       height:100%;
       object-fit:contain;
       object-position:center;
-      display:block;
       filter:drop-shadow(0 8px 14px rgba(0,0,0,.28));
     }
 
@@ -360,6 +405,8 @@
       align-items:center;
       justify-content:center;
       text-wrap:balance;
+      color:var(--accent);
+      text-shadow:0 0 18px var(--glow-soft);
     }
 
     .kingdom-score-wrap{
@@ -370,7 +417,7 @@
     }
 
     .kingdom-score-label{
-      color:#cfc6b7;
+      color:#d7ccba;
       font-family:"Cinzel", serif;
       font-size:.78rem;
       text-transform:uppercase;
@@ -384,6 +431,8 @@
       font-size:3rem;
       line-height:1;
       font-weight:800;
+      color:var(--accent);
+      text-shadow:0 0 22px var(--glow-soft);
     }
 
     .request-layout{
@@ -479,14 +528,59 @@
       font-size:.95rem;
     }
 
-    .green    { --glow: rgba(83,210,139,.20); --border: rgba(83,210,139,.32); }
-    .gold     { --glow: rgba(226,189,116,.20); --border: rgba(226,189,116,.32); }
-    .red      { --glow: rgba(224,107,107,.20); --border: rgba(224,107,107,.32); }
-    .black    { --glow: rgba(180,180,180,.14); --border: rgba(210,210,210,.18); }
-    .bordeaux { --glow: rgba(181,90,127,.20); --border: rgba(181,90,127,.32); }
-    .blue     { --glow: rgba(121,191,255,.20); --border: rgba(121,191,255,.32); }
-    .violet   { --glow: rgba(178,132,255,.20); --border: rgba(178,132,255,.32); }
-    .orange   { --glow: rgba(255,175,97,.20); --border: rgba(255,175,97,.32); }
+    .custom-fields{
+      margin-top:8px;
+      padding:16px;
+      border-radius:18px;
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.08);
+      display:none;
+    }
+
+    .custom-fields.active{
+      display:block;
+    }
+
+    .green{
+      --accent:#62ec9f;
+      --glow-soft:rgba(83,210,139,.26);
+      --border-strong:rgba(83,210,139,.55);
+    }
+    .gold{
+      --accent:#f0ca7c;
+      --glow-soft:rgba(226,189,116,.28);
+      --border-strong:rgba(226,189,116,.55);
+    }
+    .red{
+      --accent:#ff8b8b;
+      --glow-soft:rgba(224,107,107,.28);
+      --border-strong:rgba(224,107,107,.55);
+    }
+    .black{
+      --accent:#f0f0f0;
+      --glow-soft:rgba(200,200,200,.18);
+      --border-strong:rgba(220,220,220,.28);
+    }
+    .bordeaux{
+      --accent:#df7ea8;
+      --glow-soft:rgba(181,90,127,.28);
+      --border-strong:rgba(181,90,127,.55);
+    }
+    .blue{
+      --accent:#98d1ff;
+      --glow-soft:rgba(121,191,255,.28);
+      --border-strong:rgba(121,191,255,.55);
+    }
+    .violet{
+      --accent:#c39aff;
+      --glow-soft:rgba(178,132,255,.28);
+      --border-strong:rgba(178,132,255,.55);
+    }
+    .orange{
+      --accent:#ffc17f;
+      --glow-soft:rgba(255,175,97,.28);
+      --border-strong:rgba(255,175,97,.55);
+    }
 
     @media (max-width:1100px){
       .kingdom-grid{grid-template-columns:repeat(2,1fr)}
@@ -541,7 +635,7 @@
 
       <div class="scoreboard">
         <div class="kingdom-grid">
-          <article class="kingdom-card accent green">
+          <article class="kingdom-card accent-green green">
             <div class="kingdom-top">
               <div class="kingdom-logo"><img src="Alcarah.png" alt="Logo Alcarah"></div>
               <h4 class="kingdom-name">Alcarah</h4>
@@ -552,7 +646,7 @@
             </div>
           </article>
 
-          <article class="kingdom-card accent gold">
+          <article class="kingdom-card accent-gold gold">
             <div class="kingdom-top">
               <div class="kingdom-logo"><img src="Augustus%20Nubium%20Mundus.png" alt="Logo Augustus Nubium Mundus"></div>
               <h4 class="kingdom-name">Augustus Nubium Mundus</h4>
@@ -563,7 +657,7 @@
             </div>
           </article>
 
-          <article class="kingdom-card accent red">
+          <article class="kingdom-card accent-red red">
             <div class="kingdom-top">
               <div class="kingdom-logo"><img src="Baldezor.png" alt="Logo Baldezor"></div>
               <h4 class="kingdom-name">Baldezor</h4>
@@ -574,7 +668,7 @@
             </div>
           </article>
 
-          <article class="kingdom-card accent black">
+          <article class="kingdom-card accent-black black">
             <div class="kingdom-top">
               <div class="kingdom-logo"><img src="Grimelfe%20NV.png" alt="Logo Les Ombres de Grimelfe"></div>
               <h4 class="kingdom-name">Les Ombres de Grimelfe</h4>
@@ -585,7 +679,7 @@
             </div>
           </article>
 
-          <article class="kingdom-card accent bordeaux">
+          <article class="kingdom-card accent-bordeaux bordeaux">
             <div class="kingdom-top">
               <div class="kingdom-logo"><img src="Lunerei.png" alt="Logo Lunerei"></div>
               <h4 class="kingdom-name">Lunerei</h4>
@@ -596,7 +690,7 @@
             </div>
           </article>
 
-          <article class="kingdom-card accent blue">
+          <article class="kingdom-card accent-blue blue">
             <div class="kingdom-top">
               <div class="kingdom-logo"><img src="Sappheiros.png" alt="Logo Sappheiros"></div>
               <h4 class="kingdom-name">Sappheiros</h4>
@@ -607,7 +701,7 @@
             </div>
           </article>
 
-          <article class="kingdom-card accent violet">
+          <article class="kingdom-card accent-violet violet">
             <div class="kingdom-top">
               <div class="kingdom-logo"><img src="TDS%20NV.png" alt="Logo Les Terres de Sang"></div>
               <h4 class="kingdom-name">Les Terres de Sang</h4>
@@ -618,7 +712,7 @@
             </div>
           </article>
 
-          <article class="kingdom-card accent orange">
+          <article class="kingdom-card accent-orange orange">
             <div class="kingdom-top">
               <div class="kingdom-logo"><img src="Temeriah.png" alt="Logo Témeriah"></div>
               <h4 class="kingdom-name">Témeriah</h4>
@@ -647,6 +741,7 @@
             <div class="point-item"><span>Venir aider au bureau</span><strong>+100</strong></div>
             <div class="point-item"><span>Distribution de flyers</span><strong>+500</strong></div>
             <div class="point-item"><span>Amener un nouveau bénévole</span><strong>+1000</strong></div>
+            <div class="point-item"><span>Demande personnalisée</span><strong>À valider</strong></div>
           </div>
         </aside>
 
@@ -683,7 +778,22 @@
               <option>Venir aider au bureau — 100 points</option>
               <option>Distribution de flyers — 500 points</option>
               <option>Amener un nouveau bénévole — 1000 points</option>
+              <option>Demande personnalisée — sous réserve d'acceptation</option>
             </select>
+          </div>
+
+          <div id="customFields" class="custom-fields">
+            <div class="field">
+              <label for="customAction">Description de l'action personnalisée</label>
+              <textarea id="customAction" placeholder="Décris précisément l'action réalisée."></textarea>
+            </div>
+
+            <div class="field">
+              <label for="customPoints">Nombre de points demandé</label>
+              <input id="customPoints" type="number" min="1" placeholder="Ex. 250">
+            </div>
+
+            <p class="tiny">Cette demande restera soumise à validation avant attribution des points.</p>
           </div>
 
           <div class="field">
@@ -692,12 +802,25 @@
           </div>
 
           <div class="send-row">
-            <a href="#" class="btn btn-primary">Envoyer la demande</a>
+            <button class="btn btn-primary" type="button">Envoyer la demande</button>
             <span class="tiny">Version visuelle pour l’instant.</span>
           </div>
         </article>
       </div>
     </section>
   </main>
+
+  <script>
+    const actionSelect = document.getElementById('action');
+    const customFields = document.getElementById('customFields');
+
+    function toggleCustomFields() {
+      const isCustom = actionSelect.value.includes('Demande personnalisée');
+      customFields.classList.toggle('active', isCustom);
+    }
+
+    actionSelect.addEventListener('change', toggleCustomFields);
+    toggleCustomFields();
+  </script>
 </body>
 </html>
