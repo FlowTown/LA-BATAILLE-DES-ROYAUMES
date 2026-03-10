@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Bataille des Royaumes</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#05070d;
+      --bg2:#0a0e18;
+      --text:#f5efe6;
+      --muted:#b9b2a7;
+      --gold:#d6b16a;
+      --line:rgba(255,255,255,.08);
+      --shadow:0 24px 60px rgba(0,0,0,.38);
+      --panel:rgba(255,255,255,.05);
+      --ok:#69d59a;
+      --no:#ff8f8f;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      color:var(--text);
+      font-family:"Cormorant Garamond", serif;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(214,177,106,.10), transparent 30%),
+        linear-gradient(180deg, #09101d 0%, #04070d 100%);
+      min-height:100vh;
+    }
+
+    .container{
+      width:min(1200px, calc(100% - 24px));
+      margin:0 auto;
+      padding:24px 0 40px;
+    }
+
+    h1,h2,h3,h4{font-family:"Cinzel", serif;margin:0}
+    p{margin:0}
+
+    .top{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:16px;
+      flex-wrap:wrap;
+      margin-bottom:24px;
+    }
+
+    .panel{
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid var(--line);
+      border-radius:24px;
+      box-shadow:var(--shadow);
+      padding:20px;
+    }
+
+    .muted{color:var(--muted)}
+
+    .login-box{
+      max-width:480px;
+      margin:0 auto 26px;
+    }
+
+    .field{
+      display:grid;
+      gap:8px;
+      margin-top:14px;
+    }
+
+    label{
+      font-family:"Cinzel", serif;
+      font-size:.8rem;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      color:#f0e3c8;
+    }
+
+    input{
+      width:100%;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.24);
+      color:var(--text);
+      border-radius:14px;
+      padding:14px;
+      font:inherit;
+      outline:none;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:12px 16px;
+      border-radius:14px;
+      border:1px solid rgba(214,177,106,.20);
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      color:var(--text);
+      font-family:"Cinzel", serif;
+      font-size:.84rem;
+      font-weight:700;
+      letter-spacing:.05em;
+      cursor:pointer;
+    }
+
+    .btn-primary{
+      background:linear-gradient(180deg, rgba(214,177,106,.26), rgba(214,177,106,.10));
+    }
+
+    .btn-ok{
+      border-color:rgba(105,213,154,.35);
+      color:#dffff0;
+      background:linear-gradient(180deg, rgba(105,213,154,.22), rgba(105,213,154,.08));
+    }
+
+    .btn-no{
+      border-color:rgba(255,143,143,.35);
+      color:#fff0f0;
+      background:linear-gradient(180deg, rgba(255,143,143,.22), rgba(255,143,143,.08));
+    }
+
+    .hidden{display:none}
+
+    .cards{
+      display:grid;
+      gap:16px;
+      margin-top:20px;
+    }
+
+    .request-card{
+      display:grid;
+      gap:14px;
+    }
+
+    .request-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:start;
+      gap:16px;
+      flex-wrap:wrap;
+    }
+
+    .request-meta{
+      display:grid;
+      gap:6px;
+    }
+
+    .badge{
+      display:inline-block;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.04);
+      font-family:"Cinzel", serif;
+      font-size:.72rem;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+    }
+
+    .status-pending{color:#f4d48c}
+    .status-approved{color:var(--ok)}
+    .status-rejected{color:var(--no)}
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:10px 18px;
+    }
+
+    .row{
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:16px;
+      padding:12px 14px;
+    }
+
+    .row strong{
+      display:block;
+      font-family:"Cinzel", serif;
+      font-size:.76rem;
+      letter-spacing:.05em;
+      text-transform:uppercase;
+      color:#e8dcc3;
+      margin-bottom:4px;
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .empty{
+      text-align:center;
+      padding:26px;
+      color:var(--muted);
+    }
+
+    @media (max-width:800px){
+      .grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="top">
+      <div>
+        <h1>Admin — Bataille des Royaumes</h1>
+        <p class="muted">Validation des demandes et gestion des points</p>
+      </div>
+      <a class="btn" href="./">Retour au site</a>
+    </div>
+
+    <div id="loginView" class="panel login-box">
+      <h2>Connexion admin</h2>
+      <p class="muted" style="margin-top:8px;">Connecte-toi avec ton email et ton mot de passe Supabase.</p>
+
+      <div class="field">
+        <label for="adminEmail">Email</label>
+        <input id="adminEmail" type="email" placeholder="admin@mail.com">
+      </div>
+
+      <div class="field">
+        <label for="adminPassword">Mot de passe</label>
+        <input id="adminPassword" type="password" placeholder="********">
+      </div>
+
+      <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap;">
+        <button id="loginBtn" class="btn btn-primary" type="button">Se connecter</button>
+      </div>
+    </div>
+
+    <div id="adminView" class="hidden">
+      <div class="panel">
+        <div class="top" style="margin-bottom:0;">
+          <div>
+            <h2>Demandes reçues</h2>
+            <p class="muted">Tu peux approuver ou refuser chaque demande.</p>
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <button id="refreshBtn" class="btn" type="button">Actualiser</button>
+            <button id="logoutBtn" class="btn" type="button">Se déconnecter</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="requestsList" class="cards"></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = "https://vajvtuxjefyktalirqcf.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_aG99lJA0pJtRgUKbP7GRBw_Xz-Mj6C_";
+
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    const loginView = document.getElementById("loginView");
+    const adminView = document.getElementById("adminView");
+    const requestsList = document.getElementById("requestsList");
+
+    const adminEmail = document.getElementById("adminEmail");
+    const adminPassword = document.getElementById("adminPassword");
+    const loginBtn = document.getElementById("loginBtn");
+    const refreshBtn = document.getElementById("refreshBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    function pointsFromRequest(req) {
+      if (req.requested_points) return req.requested_points;
+      if (req.action_label.includes("1000")) return 1000;
+      if (req.action_label.includes("500")) return 500;
+      if (req.action_label.includes("100")) return 100;
+      return 0;
+    }
+
+    function renderRequestCard(req) {
+      const statusClass =
+        req.status === "approved" ? "status-approved" :
+        req.status === "rejected" ? "status-rejected" :
+        "status-pending";
+
+      return `
+        <div class="panel request-card">
+          <div class="request-head">
+            <div class="request-meta">
+              <h3>${req.visitor_name || "Sans nom"}</h3>
+              <p class="muted">${req.kingdom_name || "-"}</p>
+            </div>
+            <span class="badge ${statusClass}">${req.status}</span>
+          </div>
+
+          <div class="grid">
+            <div class="row">
+              <strong>Email</strong>
+              <span>${req.visitor_email || "-"}</span>
+            </div>
+            <div class="row">
+              <strong>Action</strong>
+              <span>${req.action_label || "-"}</span>
+            </div>
+            <div class="row">
+              <strong>Description personnalisée</strong>
+              <span>${req.custom_description || "-"}</span>
+            </div>
+            <div class="row">
+              <strong>Points demandés</strong>
+              <span>${pointsFromRequest(req)}</span>
+            </div>
+            <div class="row" style="grid-column:1 / -1;">
+              <strong>Preuve / précision</strong>
+              <span>${req.proof_text || "-"}</span>
+            </div>
+          </div>
+
+          ${
+            req.status === "pending"
+              ? `<div class="actions">
+                  <button class="btn btn-ok" type="button" onclick="approveRequest(${req.id})">Valider</button>
+                  <button class="btn btn-no" type="button" onclick="rejectRequest(${req.id})">Refuser</button>
+                </div>`
+              : ""
+          }
+        </div>
+      `;
+    }
+
+    async function loadRequests() {
+      const { data, error } = await supabaseClient
+        .from("point_requests")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.error(error);
+        requestsList.innerHTML = `<div class="panel empty">Erreur lors du chargement des demandes.</div>`;
+        return;
+      }
+
+      if (!data || data.length === 0) {
+        requestsList.innerHTML = `<div class="panel empty">Aucune demande pour le moment.</div>`;
+        return;
+      }
+
+      requestsList.innerHTML = data.map(renderRequestCard).join("");
+    }
+
+    async function checkSession() {
+      const { data } = await supabaseClient.auth.getSession();
+      const session = data.session;
+
+      if (session) {
+        loginView.classList.add("hidden");
+        adminView.classList.remove("hidden");
+        loadRequests();
+      } else {
+        loginView.classList.remove("hidden");
+        adminView.classList.add("hidden");
+      }
+    }
+
+    loginBtn.addEventListener("click", async () => {
+      const { error } = await supabaseClient.auth.signInWithPassword({
+        email: adminEmail.value.trim(),
+        password: adminPassword.value
+      });
+
+      if (error) {
+        alert("Connexion impossible.");
+        console.error(error);
+        return;
+      }
+
+      await checkSession();
+    });
+
+    refreshBtn.addEventListener("click", loadRequests);
+
+    logoutBtn.addEventListener("click", async () => {
+      await supabaseClient.auth.signOut();
+      checkSession();
+    });
+
+    window.approveRequest = async function(id) {
+      const { error } = await supabaseClient.rpc("approve_point_request", {
+        request_id: id
+      });
+
+      if (error) {
+        console.error(error);
+        alert("Erreur lors de la validation.");
+        return;
+      }
+
+      loadRequests();
+    }
+
+    window.rejectRequest = async function(id) {
+      const { error } = await supabaseClient.rpc("reject_point_request", {
+        request_id: id
+      });
+
+      if (error) {
+        console.error(error);
+        alert("Erreur lors du refus.");
+        return;
+      }
+
+      loadRequests();
+    }
+
+    checkSession();
+  </script>
+</body>
+</html>
