@@ -620,10 +620,11 @@
           Huit Royaumes. Huit blasons. Une seule bataille. Chaque action accomplie pour La Nuit Magique
           renforce votre camp et peut faire basculer le destin de la Coupe.
         </p>
-        <div class="hero-actions">
-          <a href="#classement" class="btn btn-primary">Voir les Royaumes</a>
-          <a href="#demande" class="btn">Demander des points</a>
-        </div>
+       <div class="hero-actions">
+  <a href="#classement" class="btn btn-primary">Voir les Royaumes</a>
+  <a href="#demande" class="btn">Demander des points</a>
+  <button id="refreshScoresBtn" class="btn" type="button">Actualiser</button>
+</div>
       </div>
     </section>
 
@@ -807,8 +808,18 @@
           </div>
         </article>
       </div>
-    </section>
-  </main>
+  </section>
+
+<div id="successMessage" class="success-message">
+  <div class="success-box">
+    <div class="success-icon">✨</div>
+    <h4>Demande envoyée</h4>
+    <p>Ta demande a bien été transmise et attend maintenant une validation.</p>
+    <button id="closeSuccessMessage" class="btn btn-primary" type="button">Fermer</button>
+  </div>
+</div>
+
+</main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
