@@ -594,8 +594,212 @@
       .brand img{width:46px;height:46px}
       .header-btn{width:100%}
     }
+    .success-message{
+  position:fixed;
+  inset:0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:rgba(3, 6, 12, 0.60);
+  backdrop-filter:blur(8px);
+  z-index:999;
+  animation:fadeOverlay .25s ease;
+}
+
+.success-message.active{
+  display:flex;
+}
+
+.success-box{
+  position:relative;
+  width:min(480px, 100%);
+  padding:30px 26px;
+  border-radius:30px;
+  overflow:hidden;
+  text-align:center;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04)),
+    radial-gradient(circle at top, rgba(214,177,106,.10), transparent 45%);
+  border:1px solid rgba(214,177,106,.22);
+  box-shadow:
+    0 30px 80px rgba(0,0,0,.45),
+    0 0 40px rgba(214,177,106,.10);
+  animation:popIn .28s ease;
+}
+
+.success-icon{
+  font-size:2.4rem;
+  margin-bottom:12px;
+  filter:drop-shadow(0 0 14px rgba(255,215,130,.35));
+  animation:floatSpark 2.2s ease-in-out infinite;
+}
+
+.success-box h4{
+  margin:0 0 10px;
+  font-family:"Cinzel", serif;
+  font-size:1.45rem;
+  color:#f4e8cf;
+}
+
+.success-box p{
+  margin:0 0 18px;
+  color:var(--muted);
+  font-size:1.05rem;
+  line-height:1.55;
+}
+
+@keyframes fadeOverlay{
+  from{opacity:0}
+  to{opacity:1}
+}
+
+@keyframes popIn{
+  from{
+    opacity:0;
+    transform:translateY(10px) scale(.96);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0) scale(1);
+  }
+}
+
+@keyframes floatSpark{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-5px)}
+}
   </style>
 </head>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const SUPABASE_URL = "https://vajvtuxjefyktalirqcf.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_aG99lJA0pJtRgUKbP7GRBw_Xz-Mj6C_";
+
+  const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  const actionSelect = document.getElementById('action');
+  const customFields = document.getElementById('customFields');
+  const successMessage = document.getElementById('successMessage');
+  const closeSuccessMessage = document.getElementById('closeSuccessMessage');
+
+  function toggleCustomFields() {
+    const isCustom = actionSelect.value.includes('Demande personnalisée');
+    customFields.classList.toggle('active', isCustom);
+  }
+
+  actionSelect.addEventListener('change', toggleCustomFields);
+  toggleCustomFields();
+
+  const kingdomCards = document.querySelectorAll(".kingdom-card");
+  const kingdomMap = {
+    "Alcarah": kingdomCards[0],
+    "Augustus Nubium Mundus": kingdomCards[1],
+    "Baldezor": kingdomCards[2],
+    "Les Ombres de Grimelfe": kingdomCards[3],
+    "Lunerei": kingdomCards[4],
+    "Sappheiros": kingdomCards[5],
+    "Les Terres de Sang": kingdomCards[6],
+    "Témeriah": kingdomCards[7]
+  };
+
+  async function loadScores() {
+    const { data, error } = await supabaseClient
+      .from("kingdoms")
+      .select("name, score");
+
+    if (error) {
+      console.error("Erreur chargement scores :", error);
+      return;
+    }
+
+    for (const row of data) {
+      const card = kingdomMap[row.name];
+      if (!card) continue;
+      const scoreEl = card.querySelector(".kingdom-score");
+      if (scoreEl) scoreEl.textContent = row.score;
+    }
+  }
+
+  const formButton = document.querySelector('#demande button.btn-primary');
+  const nameInput = document.getElementById('nom');
+  const emailInput = document.getElementById('email');
+  const kingdomInput = document.getElementById('royaume');
+  const actionInput = document.getElementById('action');
+  const proofInput = document.getElementById('preuve');
+  const customActionInput = document.getElementById('customAction');
+  const customPointsInput = document.getElementById('customPoints');
+
+  async function submitRequest() {
+    const actionValue = actionInput.value;
+    const isCustom = actionValue.includes('Demande personnalisée');
+
+    const payload = {
+      visitor_name: nameInput.value.trim(),
+      visitor_email: emailInput.value.trim() || null,
+      kingdom_name: kingdomInput.value,
+      action_label: actionValue,
+      custom_description: isCustom ? (customActionInput?.value.trim() || null) : null,
+      requested_points: isCustom ? (Number(customPointsInput?.value) || null) : null,
+      proof_text: proofInput.value.trim() || null
+    };
+
+    if (!payload.visitor_name) {
+      alert("Merci d'indiquer un nom ou pseudo.");
+      return;
+    }
+
+    if (isCustom && !payload.custom_description) {
+      alert("Décris l'action personnalisée.");
+      return;
+    }
+
+    if (isCustom && !payload.requested_points) {
+      alert("Indique le nombre de points demandé.");
+      return;
+    }
+
+    const { error } = await supabaseClient
+      .from("point_requests")
+      .insert(payload);
+
+    if (error) {
+      console.error("Erreur envoi demande :", error);
+      alert("Erreur lors de l'envoi de la demande.");
+      return;
+    }
+
+    nameInput.value = "";
+    emailInput.value = "";
+    proofInput.value = "";
+    if (customActionInput) customActionInput.value = "";
+    if (customPointsInput) customPointsInput.value = "";
+    actionInput.selectedIndex = 0;
+    toggleCustomFields();
+
+    successMessage.classList.add("active");
+  }
+
+  if (formButton) {
+    formButton.addEventListener("click", submitRequest);
+  }
+
+  if (closeSuccessMessage) {
+    closeSuccessMessage.addEventListener("click", () => {
+      successMessage.classList.remove("active");
+    });
+  }
+
+  if (successMessage) {
+    successMessage.addEventListener("click", (e) => {
+      if (e.target === successMessage) {
+        successMessage.classList.remove("active");
+      }
+    });
+  }
+
+  loadScores();
+</script>
 <body>
   <header>
     <div class="container topbar">
