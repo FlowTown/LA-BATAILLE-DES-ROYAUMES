@@ -15,7 +15,6 @@
       --muted:#b8af9f;
       --gold:#e0ba73;
       --gold-soft:#f4ddb1;
-      --gold-strong:#ffd98a;
       --line:rgba(255,255,255,.08);
       --panel:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
       --shadow:0 28px 70px rgba(0,0,0,.42);
@@ -125,8 +124,8 @@
 
     .main{
       display:grid;
-      grid-template-columns:0.95fr 1.05fr;
-      gap:24px;
+      grid-template-columns:0.92fr 1.08fr;
+      gap:26px;
       min-height:0;
     }
 
@@ -152,7 +151,7 @@
 
     /* LEFT */
     .leader-panel{
-      padding:30px 30px 26px;
+      padding:26px 28px 24px;
       display:flex;
       flex-direction:column;
       justify-content:space-between;
@@ -166,8 +165,7 @@
       content:"";
       position:absolute;
       inset:0;
-      background:
-        radial-gradient(circle at 50% 44%, rgba(224,186,115,.12), transparent 28%);
+      background:radial-gradient(circle at 50% 42%, rgba(224,186,115,.10), transparent 26%);
       pointer-events:none;
       z-index:0;
     }
@@ -184,21 +182,21 @@
     }
 
     .leader-top{
-      gap:8px;
+      gap:6px;
     }
 
     .leader-top .small{
       font-family:"Cinzel", serif;
       text-transform:uppercase;
       letter-spacing:.16em;
-      font-size:.74rem;
+      font-size:.70rem;
       color:var(--gold);
     }
 
     .leader-top h2{
       margin:0;
       font-family:"Cinzel", serif;
-      font-size:clamp(1.55rem, 2.4vw, 2.35rem);
+      font-size:clamp(1.3rem, 2vw, 1.9rem);
       line-height:1.02;
     }
 
@@ -206,25 +204,24 @@
       flex:1;
       justify-content:center;
       min-height:0;
-      padding:18px 0;
+      padding:10px 0 6px;
     }
 
     .leader-medallion{
       position:relative;
-      width:min(58%, 300px);
+      width:min(64%, 340px);
       aspect-ratio:1/1;
-      border-radius:32px;
+      border-radius:30px;
       display:grid;
       place-items:center;
       padding:22px;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.02));
-      border:1px solid rgba(255,217,138,.42);
+      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      border:1px solid rgba(255,217,138,.36);
       box-shadow:
-        0 0 0 1px rgba(255,217,138,.07),
-        0 18px 42px rgba(0,0,0,.26),
-        0 0 34px rgba(224,186,115,.10),
-        inset 0 0 24px rgba(255,217,138,.04);
+        0 0 0 1px rgba(255,217,138,.06),
+        0 18px 42px rgba(0,0,0,.24),
+        0 0 28px rgba(224,186,115,.08),
+        inset 0 0 20px rgba(255,217,138,.03);
       overflow:hidden;
     }
 
@@ -234,10 +231,10 @@
       inset:0;
       pointer-events:none;
       background:
-        radial-gradient(circle at 20% 18%, rgba(255,240,200,.42), transparent 8%),
-        radial-gradient(circle at 82% 18%, rgba(255,240,200,.30), transparent 7%),
-        radial-gradient(circle at 16% 80%, rgba(255,240,200,.18), transparent 7%),
-        radial-gradient(circle at 84% 78%, rgba(255,240,200,.22), transparent 8%);
+        radial-gradient(circle at 20% 18%, rgba(255,240,200,.36), transparent 8%),
+        radial-gradient(circle at 82% 18%, rgba(255,240,200,.26), transparent 7%),
+        radial-gradient(circle at 16% 80%, rgba(255,240,200,.16), transparent 7%),
+        radial-gradient(circle at 84% 78%, rgba(255,240,200,.18), transparent 8%);
     }
 
     .sparkle{
@@ -264,42 +261,42 @@
       object-fit:contain;
       object-position:center;
       display:block;
-      filter:drop-shadow(0 10px 18px rgba(0,0,0,.20));
+      filter:drop-shadow(0 8px 14px rgba(0,0,0,.18));
       position:relative;
       z-index:1;
     }
 
     .leader-bottom{
-      gap:8px;
+      gap:4px;
     }
 
     .leader-line{
       font-family:"Cinzel", serif;
       text-transform:uppercase;
       letter-spacing:.16em;
-      font-size:.70rem;
+      font-size:.66rem;
       color:#f0d9a0;
     }
 
     .leader-name{
       font-family:"Cinzel", serif;
-      font-size:clamp(2rem, 2.9vw, 3rem);
+      font-size:clamp(2.15rem, 3.1vw, 3.15rem);
       line-height:1.02;
-      max-width:90%;
+      max-width:92%;
       text-wrap:balance;
     }
 
     .leader-score{
       font-family:"Cinzel", serif;
-      font-size:clamp(3rem, 4.7vw, 4.7rem);
-      line-height:1;
+      font-size:clamp(3.25rem, 5vw, 5rem);
+      line-height:.95;
       color:var(--gold-soft);
-      text-shadow:0 0 22px rgba(224,186,115,.22);
+      text-shadow:0 0 18px rgba(224,186,115,.18);
     }
 
     /* RIGHT */
     .ranking-panel{
-      padding:18px;
+      padding:18px 18px 20px;
       display:grid;
       grid-template-rows:auto 1fr;
       gap:14px;
@@ -316,7 +313,7 @@
     .ranking-head h2{
       margin:0;
       font-family:"Cinzel", serif;
-      font-size:1.16rem;
+      font-size:1.08rem;
     }
 
     .refresh-badge{
@@ -347,7 +344,7 @@
     .ranking-list{
       display:flex;
       flex-direction:column;
-      gap:12px;
+      gap:10px;
       min-height:0;
       justify-content:space-between;
     }
@@ -355,14 +352,14 @@
     .ranking-item{
       position:relative;
       display:grid;
-      grid-template-columns:74px 52px minmax(0,1fr) 108px;
+      grid-template-columns:68px 48px minmax(0,1fr) 96px;
       align-items:center;
       gap:14px;
-      min-height:calc((100% - 72px) / 7);
-      padding:12px 18px;
-      border-radius:22px;
-      background:linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.025));
-      border:1px solid rgba(255,255,255,.07);
+      min-height:calc((100% - 60px) / 7);
+      padding:10px 16px;
+      border-radius:20px;
+      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.022));
+      border:1px solid rgba(255,255,255,.065);
       overflow:hidden;
       isolation:isolate;
     }
@@ -390,20 +387,20 @@
       place-items:center;
       height:100%;
       font-family:"Cinzel", serif;
-      font-size:1.12rem;
+      font-size:1.06rem;
       color:#f1e5c8;
       text-align:center;
     }
 
     .rank-logo{
-      width:46px;
-      height:46px;
+      width:44px;
+      height:44px;
       display:grid;
       place-items:center;
       justify-self:center;
-      border-radius:14px;
-      padding:6px;
-      background:rgba(255,255,255,.03);
+      border-radius:13px;
+      padding:5px;
+      background:rgba(255,255,255,.028);
       border:1px solid rgba(255,255,255,.05);
     }
 
@@ -421,8 +418,8 @@
       min-width:0;
       height:100%;
       font-family:"Cinzel", serif;
-      font-size:.98rem;
-      line-height:1.08;
+      font-size:.92rem;
+      line-height:1.05;
     }
 
     .rank-name span{
@@ -438,10 +435,10 @@
       height:100%;
       text-align:right;
       font-family:"Cinzel", serif;
-      font-size:1.38rem;
+      font-size:1.3rem;
       line-height:1;
       color:var(--itemAccent);
-      text-shadow:0 0 18px var(--itemGlow);
+      text-shadow:0 0 16px var(--itemGlow);
     }
 
     .score-flash{ animation:scoreFlash .7s ease; }
@@ -571,7 +568,7 @@
       <section class="panel leader-panel">
         <div class="leader-top">
           <div class="small">Le royaume dominant</div>
-          <h2>Premier du classement</h2>
+          <h2>Royaume en tête</h2>
         </div>
 
         <div class="leader-middle">
@@ -652,8 +649,11 @@
         const eased = 1 - Math.pow(1 - progress, 3);
         const value = Math.round(start + (end - start) * eased);
         element.textContent = `${value}${suffix}`;
-        if (progress < 1) requestAnimationFrame(step);
-        else element.textContent = `${end}${suffix}`;
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        } else {
+          element.textContent = `${end}${suffix}`;
+        }
       }
 
       requestAnimationFrame(step);
