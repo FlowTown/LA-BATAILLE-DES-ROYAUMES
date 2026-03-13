@@ -11,12 +11,12 @@
 
   <style>
     :root{
-      --text:#f7f0e6;
-      --muted:#b8af9f;
+      --text:#f6efe4;
+      --muted:#b6ab98;
       --gold:#e0ba73;
       --gold-soft:#f4ddb1;
-      --line:rgba(255,255,255,.08);
       --panel-bg:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+      --line:rgba(255,255,255,.08);
       --shadow:0 30px 80px rgba(0,0,0,.45);
     }
 
@@ -41,7 +41,7 @@
       position:fixed;
       inset:0;
       pointer-events:none;
-      opacity:.32;
+      opacity:.30;
       background-image:
         radial-gradient(2px 2px at 10% 15%, rgba(255,255,255,.8) 40%, transparent 45%),
         radial-gradient(1.5px 1.5px at 20% 75%, rgba(255,255,255,.55) 40%, transparent 45%),
@@ -58,7 +58,7 @@
       display:grid;
       grid-template-rows:auto 1fr auto;
       gap:18px;
-      padding:24px;
+      padding:22px 24px 18px;
       position:relative;
       z-index:1;
     }
@@ -67,18 +67,19 @@
       display:flex;
       justify-content:space-between;
       align-items:flex-start;
-      gap:20px;
+      gap:24px;
     }
 
     .title-wrap{
       display:flex;
       align-items:flex-start;
       gap:16px;
+      min-width:0;
     }
 
     .title-wrap img{
-      width:84px;
-      height:84px;
+      width:82px;
+      height:82px;
       object-fit:contain;
       flex-shrink:0;
       filter:drop-shadow(0 10px 20px rgba(0,0,0,.35));
@@ -88,7 +89,7 @@
       font-family:"Cinzel", serif;
       text-transform:uppercase;
       letter-spacing:.18em;
-      font-size:.75rem;
+      font-size:.72rem;
       color:var(--gold);
       margin-bottom:6px;
     }
@@ -96,20 +97,22 @@
     h1{
       margin:0;
       font-family:"Cinzel", serif;
-      font-size:clamp(1.8rem, 3vw, 3rem);
+      font-size:clamp(2rem, 3.2vw, 3.2rem);
       line-height:1;
+      text-wrap:balance;
     }
 
     .top-right{
       text-align:right;
-      padding-top:8px;
+      padding-top:10px;
+      flex-shrink:0;
     }
 
     .top-right .label{
       font-family:"Cinzel", serif;
       text-transform:uppercase;
       letter-spacing:.12em;
-      font-size:.72rem;
+      font-size:.70rem;
       color:var(--muted);
     }
 
@@ -122,7 +125,7 @@
 
     .main{
       display:grid;
-      grid-template-columns:1.08fr .92fr;
+      grid-template-columns:1.12fr .88fr;
       gap:24px;
       min-height:0;
     }
@@ -149,24 +152,20 @@
 
     /* LEFT PANEL */
     .hero-panel{
-      padding:24px;
+      padding:20px 24px 18px;
       display:grid;
       grid-template-rows:auto 1fr auto;
-      justify-items:center;
-      align-items:center;
-      text-align:center;
+      min-height:0;
       position:relative;
       isolation:isolate;
     }
 
-    .hero-top,
-    .hero-middle,
-    .hero-bottom{
-      width:100%;
-      display:grid;
-      justify-items:center;
-      align-items:center;
+    .hero-top{
       text-align:center;
+      display:grid;
+      gap:8px;
+      justify-items:center;
+      align-self:start;
       position:relative;
       z-index:2;
     }
@@ -175,21 +174,27 @@
       font-family:"Cinzel", serif;
       text-transform:uppercase;
       letter-spacing:.16em;
-      font-size:.8rem;
+      font-size:.76rem;
       color:var(--gold);
-      margin-bottom:10px;
-      text-align:center;
     }
 
     .hero-top h2{
       margin:0;
       font-family:"Cinzel", serif;
-      font-size:clamp(2rem, 3.3vw, 3.4rem);
-      line-height:1.03;
+      font-size:clamp(1.8rem, 3vw, 3.2rem);
+      line-height:1.02;
       text-align:center;
     }
 
-    .throne-wrap{
+    .hero-middle{
+      position:relative;
+      min-height:0;
+      display:grid;
+      place-items:center;
+      z-index:1;
+    }
+
+    .throne-stage{
       position:relative;
       width:100%;
       height:100%;
@@ -200,12 +205,11 @@
 
     .throne-glow{
       position:absolute;
-      inset:auto;
-      width:70%;
+      width:72%;
       aspect-ratio:1/1;
       border-radius:50%;
-      background:radial-gradient(circle, rgba(224,186,115,.22), rgba(224,186,115,.08), transparent 72%);
-      filter:blur(18px);
+      background:radial-gradient(circle, rgba(224,186,115,.20), rgba(224,186,115,.07), transparent 74%);
+      filter:blur(22px);
       pointer-events:none;
       z-index:0;
     }
@@ -213,69 +217,74 @@
     .throne-img{
       position:absolute;
       left:50%;
-      top:50%;
+      top:54%;
       transform:translate(-50%, -50%);
-      width:min(76%, 620px);
-      max-height:100%;
+      width:min(86%, 760px);
+      height:min(92%, 620px);
       object-fit:contain;
       object-position:center;
       z-index:1;
-      filter:drop-shadow(0 28px 40px rgba(0,0,0,.34));
+      filter:drop-shadow(0 28px 38px rgba(0,0,0,.34));
       pointer-events:none;
       user-select:none;
     }
 
-    .leader-logo-box{
-      position:relative;
-      z-index:2;
-      width:150px;
-      height:150px;
-      border-radius:28px;
-      padding:16px;
+    .leader-logo-seat{
+      position:absolute;
+      left:50%;
+      top:61%;
+      transform:translate(-50%, -50%);
+      width:165px;
+      height:165px;
+      border-radius:30px;
       display:grid;
       place-items:center;
-      background:rgba(10,12,20,.30);
-      border:1px solid rgba(255,255,255,.14);
-      backdrop-filter:blur(6px);
-      box-shadow:0 18px 36px rgba(0,0,0,.28);
+      padding:16px;
+      background:rgba(15,16,22,.22);
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow:0 20px 40px rgba(0,0,0,.26);
+      z-index:2;
     }
 
-    .leader-logo-box img{
+    .leader-logo-seat img{
       width:100%;
       height:100%;
       object-fit:contain;
       object-position:center;
       display:block;
-      filter:drop-shadow(0 8px 14px rgba(0,0,0,.24));
+      filter:none;
     }
 
     .hero-bottom{
-      gap:8px;
+      display:grid;
+      gap:6px;
+      justify-items:center;
+      text-align:center;
+      align-self:end;
+      position:relative;
+      z-index:2;
     }
 
     .leader-line{
       font-family:"Cinzel", serif;
       text-transform:uppercase;
       letter-spacing:.16em;
-      font-size:.78rem;
+      font-size:.74rem;
       color:#f0d9a0;
-      text-align:center;
     }
 
     .leader-name{
       font-family:"Cinzel", serif;
-      font-size:clamp(2rem, 3vw, 3.1rem);
-      line-height:1.05;
-      text-align:center;
-      max-width:92%;
+      font-size:clamp(2rem, 3vw, 3rem);
+      line-height:1.04;
+      max-width:90%;
       text-wrap:balance;
     }
 
     .leader-score{
       font-family:"Cinzel", serif;
-      font-size:clamp(3rem, 5vw, 4.8rem);
+      font-size:clamp(2.9rem, 5vw, 4.8rem);
       line-height:1;
-      text-align:center;
       color:var(--gold-soft);
       text-shadow:0 0 22px rgba(224,186,115,.25);
     }
@@ -299,7 +308,7 @@
     .right-head h2{
       margin:0;
       font-family:"Cinzel", serif;
-      font-size:1.28rem;
+      font-size:1.25rem;
     }
 
     .refresh-badge{
@@ -336,11 +345,11 @@
 
     .ranking-item{
       display:grid;
-      grid-template-columns:74px 62px minmax(0,1fr) 110px;
+      grid-template-columns:74px 58px minmax(0,1fr) 106px;
       align-items:center;
       gap:14px;
       padding:10px 18px;
-      min-height:72px;
+      min-height:70px;
       border-radius:24px;
       background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
       border:1px solid rgba(255,255,255,.07);
@@ -367,26 +376,26 @@
       z-index:1;
       display:grid;
       place-items:center;
+      height:100%;
       font-family:"Cinzel", serif;
-      font-size:1.18rem;
+      font-size:1.15rem;
       color:#f1e5c8;
       text-align:center;
-      height:100%;
     }
 
     .rank-logo{
       position:relative;
       z-index:1;
-      width:54px;
-      height:54px;
+      width:50px;
+      height:50px;
       justify-self:center;
       align-self:center;
       display:grid;
       place-items:center;
-      padding:7px;
-      border-radius:16px;
-      background:rgba(255,255,255,.04);
-      border:1px solid rgba(255,255,255,.08);
+      padding:6px;
+      border-radius:14px;
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.06);
     }
 
     .rank-logo img{
@@ -407,7 +416,7 @@
       height:100%;
       font-family:"Cinzel", serif;
       font-size:1rem;
-      line-height:1.12;
+      line-height:1.1;
     }
 
     .rank-name span{
@@ -425,7 +434,7 @@
       height:100%;
       text-align:right;
       font-family:"Cinzel", serif;
-      font-size:1.55rem;
+      font-size:1.5rem;
       line-height:1;
       color:var(--itemAccent);
       text-shadow:0 0 18px var(--itemGlow);
@@ -498,6 +507,16 @@
       .ranking-list{
         grid-template-rows:none;
       }
+
+      .throne-img{
+        width:min(78%, 620px);
+        height:auto;
+      }
+
+      .leader-logo-seat{
+        width:145px;
+        height:145px;
+      }
     }
   </style>
 </head>
@@ -526,10 +545,10 @@
         </div>
 
         <div class="hero-middle">
-          <div class="throne-wrap">
+          <div class="throne-stage">
             <div class="throne-glow"></div>
             <img class="throne-img" src="TRONE%20NM.png" alt="Trône">
-            <div class="leader-logo-box">
+            <div class="leader-logo-seat">
               <img id="leaderLogo" src="Temeriah.png" alt="Leader">
             </div>
           </div>
