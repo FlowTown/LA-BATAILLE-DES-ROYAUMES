@@ -11,8 +11,6 @@
 
   <style>
     :root{
-      --bg:#05070e;
-      --bg2:#0b1223;
       --text:#f7f0e6;
       --muted:#b8af9f;
       --gold:#e0ba73;
@@ -153,9 +151,9 @@
         radial-gradient(circle at 88% 86%, rgba(255,255,255,.03), transparent 18%);
     }
 
-    /* LEFT / LEADER */
+    /* LEFT */
     .leader-panel{
-      padding:28px 28px 24px;
+      padding:28px 30px 26px;
       display:grid;
       grid-template-rows:auto 1fr auto;
       min-height:0;
@@ -168,8 +166,7 @@
       position:absolute;
       inset:0;
       background:
-        radial-gradient(circle at 50% 42%, rgba(224,186,115,.11), transparent 36%),
-        radial-gradient(circle at 50% 42%, rgba(255,217,138,.07), transparent 18%);
+        radial-gradient(circle at 50% 48%, rgba(224,186,115,.10), transparent 34%);
       pointer-events:none;
       z-index:0;
     }
@@ -185,8 +182,9 @@
     }
 
     .leader-top{
-      gap:10px;
+      gap:8px;
       align-self:start;
+      margin-bottom:6px;
     }
 
     .leader-top .small{
@@ -200,8 +198,8 @@
     .leader-top h2{
       margin:0;
       font-family:"Cinzel", serif;
-      font-size:clamp(1.8rem, 3vw, 3rem);
-      line-height:1.03;
+      font-size:clamp(1.7rem, 2.7vw, 2.8rem);
+      line-height:1.02;
     }
 
     .leader-middle{
@@ -212,43 +210,35 @@
 
     .leader-frame{
       position:relative;
-      width:min(70%, 360px);
-      aspect-ratio:1/1;
+      width:min(64%, 360px);
+      aspect-ratio:1/1.12;
       border-radius:34px;
       display:grid;
       place-items:center;
-      padding:20px;
+      padding:18px;
       background:
-        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.025));
-      border:1px solid rgba(255,255,255,.08);
+        linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border:1px solid rgba(255,217,138,.42);
       box-shadow:
-        0 20px 40px rgba(0,0,0,.24),
-        inset 0 0 0 1px rgba(255,255,255,.03);
+        0 0 0 1px rgba(255,217,138,.08),
+        0 18px 42px rgba(0,0,0,.25),
+        0 0 30px rgba(224,186,115,.10),
+        inset 0 0 24px rgba(255,217,138,.04);
       overflow:hidden;
-    }
-
-    .leader-frame.top-1{
-      border:1px solid rgba(255,217,138,.45);
-      box-shadow:
-        0 0 0 1px rgba(255,217,138,.10),
-        0 18px 42px rgba(0,0,0,.28),
-        0 0 38px rgba(224,186,115,.16),
-        inset 0 0 24px rgba(255,217,138,.05);
+      margin-top:12px;
     }
 
     .leader-frame::before{
       content:"";
       position:absolute;
-      inset:-2px;
-      border-radius:36px;
+      inset:0;
       pointer-events:none;
       background:
-        radial-gradient(circle at 16% 18%, rgba(255,236,184,.50), transparent 10%),
-        radial-gradient(circle at 83% 20%, rgba(255,236,184,.32), transparent 8%),
-        radial-gradient(circle at 24% 80%, rgba(255,236,184,.22), transparent 7%),
-        radial-gradient(circle at 72% 76%, rgba(255,236,184,.30), transparent 8%);
-      opacity:.85;
-      mix-blend-mode:screen;
+        radial-gradient(circle at 18% 16%, rgba(255,240,200,.45), transparent 8%),
+        radial-gradient(circle at 82% 18%, rgba(255,240,200,.35), transparent 7%),
+        radial-gradient(circle at 16% 82%, rgba(255,240,200,.20), transparent 7%),
+        radial-gradient(circle at 84% 78%, rgba(255,240,200,.26), transparent 8%);
+      opacity:.9;
     }
 
     .sparkle{
@@ -257,7 +247,6 @@
       height:10px;
       border-radius:50%;
       background:radial-gradient(circle, rgba(255,245,210,.95), rgba(255,217,138,.55), transparent 72%);
-      filter:blur(.2px);
       opacity:.8;
       animation:sparkleFloat 3.8s ease-in-out infinite;
       pointer-events:none;
@@ -276,14 +265,15 @@
       object-fit:contain;
       object-position:center;
       display:block;
-      filter:drop-shadow(0 10px 18px rgba(0,0,0,.25));
+      filter:drop-shadow(0 10px 18px rgba(0,0,0,.22));
       position:relative;
       z-index:1;
     }
 
     .leader-bottom{
       align-self:end;
-      gap:6px;
+      gap:8px;
+      margin-top:10px;
     }
 
     .leader-line{
@@ -296,21 +286,21 @@
 
     .leader-name{
       font-family:"Cinzel", serif;
-      font-size:clamp(2rem, 3vw, 3.2rem);
-      line-height:1.04;
+      font-size:clamp(1.9rem, 2.8vw, 3rem);
+      line-height:1.02;
       max-width:90%;
       text-wrap:balance;
     }
 
     .leader-score{
       font-family:"Cinzel", serif;
-      font-size:clamp(3rem, 5.2vw, 5rem);
+      font-size:clamp(3rem, 4.8vw, 4.7rem);
       line-height:1;
       color:var(--gold-soft);
-      text-shadow:0 0 22px rgba(224,186,115,.25);
+      text-shadow:0 0 22px rgba(224,186,115,.24);
     }
 
-    /* RIGHT / RANKING */
+    /* RIGHT */
     .ranking-panel{
       padding:18px;
       display:grid;
@@ -329,7 +319,7 @@
     .ranking-head h2{
       margin:0;
       font-family:"Cinzel", serif;
-      font-size:1.22rem;
+      font-size:1.18rem;
     }
 
     .refresh-badge{
@@ -359,20 +349,19 @@
 
     .ranking-list{
       display:grid;
-      gap:10px;
-      align-content:start;
+      grid-template-rows:repeat(7, minmax(0, 1fr));
+      gap:12px;
       min-height:0;
-      overflow:hidden;
     }
 
     .ranking-item{
       position:relative;
       display:grid;
-      grid-template-columns:70px 56px minmax(0,1fr) 110px;
+      grid-template-columns:78px 54px minmax(0,1fr) 110px;
       align-items:center;
       gap:14px;
-      min-height:68px;
-      padding:10px 18px;
+      min-height:74px;
+      padding:12px 18px;
       border-radius:22px;
       background:linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.025));
       border:1px solid rgba(255,255,255,.07);
@@ -385,17 +374,9 @@
       position:absolute;
       inset:0;
       background:linear-gradient(90deg, var(--itemGlow), transparent 68%);
-      opacity:.34;
+      opacity:.30;
       pointer-events:none;
       z-index:0;
-    }
-
-    .ranking-item.top-1{
-      border-color:rgba(255,217,138,.34);
-      box-shadow:
-        0 0 0 1px rgba(255,217,138,.08),
-        inset 0 0 24px rgba(255,217,138,.05),
-        0 0 22px rgba(224,186,115,.08);
     }
 
     .rank-num,
@@ -411,7 +392,7 @@
       place-items:center;
       height:100%;
       font-family:"Cinzel", serif;
-      font-size:1.12rem;
+      font-size:1.18rem;
       color:#f1e5c8;
       text-align:center;
     }
@@ -465,18 +446,9 @@
       text-shadow:0 0 18px var(--itemGlow);
     }
 
-    /* CHANGE ANIMATIONS */
-    .score-flash{
-      animation:scoreFlash .7s ease;
-    }
-
-    .row-flash{
-      animation:rowFlash .85s ease;
-    }
-
-    .leader-flash{
-      animation:leaderFlash .9s ease;
-    }
+    .score-flash{ animation:scoreFlash .7s ease; }
+    .row-flash{ animation:rowFlash .85s ease; }
+    .leader-flash{ animation:leaderFlash .9s ease; }
 
     @keyframes pulseDot{
       0%{transform:scale(1);opacity:1}
@@ -491,19 +463,19 @@
 
     @keyframes scoreFlash{
       0%{transform:scale(1); filter:brightness(1);}
-      35%{transform:scale(1.14); filter:brightness(1.35);}
+      35%{transform:scale(1.12); filter:brightness(1.3);}
       100%{transform:scale(1); filter:brightness(1);}
     }
 
     @keyframes rowFlash{
       0%{transform:scale(1)}
-      35%{transform:scale(1.015)}
+      35%{transform:scale(1.012)}
       100%{transform:scale(1)}
     }
 
     @keyframes leaderFlash{
       0%{transform:scale(1)}
-      35%{transform:scale(1.025)}
+      35%{transform:scale(1.02)}
       100%{transform:scale(1)}
     }
 
@@ -568,6 +540,10 @@
       .leader-frame{
         width:min(56%, 320px);
       }
+
+      .ranking-list{
+        grid-template-rows:none;
+      }
     }
   </style>
 </head>
@@ -596,7 +572,7 @@
         </div>
 
         <div class="leader-middle">
-          <div id="leaderFrame" class="leader-frame top-1">
+          <div id="leaderFrame" class="leader-frame">
             <span class="sparkle s1"></span>
             <span class="sparkle s2"></span>
             <span class="sparkle s3"></span>
@@ -616,7 +592,7 @@
 
       <section class="panel ranking-panel">
         <div class="ranking-head">
-          <h2>Classement des 8 royaumes</h2>
+          <h2>Les 7 royaumes suivants</h2>
           <div class="refresh-badge">
             <span class="pulse-dot"></span>
             Actualisation auto
@@ -673,12 +649,8 @@
         const eased = 1 - Math.pow(1 - progress, 3);
         const value = Math.round(start + (end - start) * eased);
         element.textContent = `${value}${suffix}`;
-
-        if (progress < 1) {
-          requestAnimationFrame(step);
-        } else {
-          element.textContent = `${end}${suffix}`;
-        }
+        if (progress < 1) requestAnimationFrame(step);
+        else element.textContent = `${end}${suffix}`;
       }
 
       requestAnimationFrame(step);
@@ -699,6 +671,7 @@
       }
 
       const leader = sortedData[0];
+      const others = sortedData.slice(1);
       const leaderAsset = kingdomAssets[leader.name] || { logo: "", color: "#f4ddb1" };
       const previousLeaderScore = previousScores[leader.name] ?? leader.score;
 
@@ -718,11 +691,13 @@
         }
       }
 
-      rankingList.innerHTML = sortedData.map((row, index) => {
+      rankingList.innerHTML = others.map((row, index) => {
         const asset = kingdomAssets[row.name] || { logo: "", cls: "gold", color: "#f0ca7c" };
+        const displayRank = index + 2;
+
         return `
-          <article class="ranking-item ${asset.cls} ${index === 0 ? "top-1" : ""}" data-name="${row.name}" data-score="${row.score}">
-            <div class="rank-num">${index === 0 ? "👑" : "#" + (index + 1)}</div>
+          <article class="ranking-item ${asset.cls}" data-name="${row.name}" data-score="${row.score}">
+            <div class="rank-num">#${displayRank}</div>
             <div class="rank-logo">
               <img src="${asset.logo}" alt="${row.name}">
             </div>
@@ -739,7 +714,6 @@
           const name = item.dataset.name;
           const newScore = Number(item.dataset.score);
           const oldScore = previousScores[name];
-
           const scoreEl = item.querySelector(".rank-score");
 
           if (oldScore == null) {
