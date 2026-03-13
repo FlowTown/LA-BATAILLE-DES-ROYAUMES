@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scoreboard — La Bataille des Royaumes</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#04060b;
+      --bg2:#0a1020;
+      --text:#f7f0e6;
+      --muted:#b8af9f;
+      --gold:#e0ba73;
+      --line:rgba(255,255,255,.08);
+      --shadow:0 30px 80px rgba(0,0,0,.45);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+
+    body{
+      margin:0;
+      color:var(--text);
+      font-family:"Cormorant Garamond", serif;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(224,186,115,.12), transparent 28%),
+        radial-gradient(circle at 15% 20%, rgba(82,125,255,.10), transparent 20%),
+        radial-gradient(circle at 85% 20%, rgba(153,84,255,.10), transparent 20%),
+        linear-gradient(180deg, #09101d 0%, #04070d 100%);
+      overflow:hidden;
+      position:relative;
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      opacity:.34;
+      background-image:
+        radial-gradient(2px 2px at 10% 15%, rgba(255,255,255,.8) 40%, transparent 45%),
+        radial-gradient(1.5px 1.5px at 20% 75%, rgba(255,255,255,.55) 40%, transparent 45%),
+        radial-gradient(2px 2px at 38% 20%, rgba(255,255,255,.4) 40%, transparent 45%),
+        radial-gradient(1px 1px at 59% 12%, rgba(255,255,255,.65) 40%, transparent 45%),
+        radial-gradient(1.5px 1.5px at 74% 70%, rgba(255,255,255,.55) 40%, transparent 45%),
+        radial-gradient(2px 2px at 88% 20%, rgba(255,255,255,.5) 40%, transparent 45%),
+        radial-gradient(1.5px 1.5px at 86% 84%, rgba(255,255,255,.45) 40%, transparent 45%);
+    }
+
+    .screen{
+      width:100%;
+      height:100%;
+      display:grid;
+      grid-template-rows:auto 1fr auto;
+      padding:24px;
+      position:relative;
+      z-index:1;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:20px;
+    }
+
+    .title-wrap{
+      display:flex;
+      align-items:center;
+      gap:16px;
+    }
+
+    .title-wrap img{
+      width:72px;
+      height:72px;
+      object-fit:contain;
+      filter:drop-shadow(0 10px 20px rgba(0,0,0,.35));
+    }
+
+    .eyebrow{
+      font-family:"Cinzel", serif;
+      text-transform:uppercase;
+      letter-spacing:.18em;
+      font-size:.75rem;
+      color:var(--gold);
+      margin-bottom:6px;
+    }
+
+    h1{
+      margin:0;
+      font-family:"Cinzel", serif;
+      font-size:clamp(1.6rem, 3vw, 2.8rem);
+      line-height:1;
+    }
+
+    .top-right{
+      text-align:right;
+    }
+
+    .top-right .label{
+      font-family:"Cinzel", serif;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      font-size:.72rem;
+      color:var(--muted);
+    }
+
+    .top-right .value{
+      margin-top:4px;
+      font-family:"Cinzel", serif;
+      font-size:1rem;
+      color:#f0e6cf;
+    }
+
+    .main{
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:24px;
+      align-items:stretch;
+      min-height:0;
+      padding-top:20px;
+      padding-bottom:20px;
+    }
+
+    .panel{
+      border-radius:34px;
+      background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+      border:1px solid var(--line);
+      box-shadow:var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .panel::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(circle at 12% 12%, rgba(255,255,255,.04), transparent 18%),
+        radial-gradient(circle at 88% 86%, rgba(255,255,255,.03), transparent 18%);
+      pointer-events:none;
+    }
+
+    .leader{
+      padding:30px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+      position:relative;
+      min-height:100%;
+    }
+
+    .leader-glow{
+      position:absolute;
+      width:380px;
+      height:380px;
+      border-radius:50%;
+      background:radial-gradient(circle, var(--leaderGlow), transparent 65%);
+      opacity:.7;
+      filter:blur(8px);
+      pointer-events:none;
+    }
+
+    .leader-crown{
+      font-size:4rem;
+      line-height:1;
+      margin-bottom:12px;
+      filter:drop-shadow(0 0 16px rgba(255,215,120,.45));
+      animation:floatCrown 2.8s ease-in-out infinite;
+      position:relative;
+      z-index:1;
+    }
+
+    .leader-logo{
+      width:150px;
+      height:150px;
+      border-radius:28px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:16px;
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.10);
+      margin-bottom:18px;
+      position:relative;
+      z-index:1;
+    }
+
+    .leader-logo img{
+      width:100%;
+      height:100%;
+      object-fit:contain;
+      filter:drop-shadow(0 12px 16px rgba(0,0,0,.25));
+    }
+
+    .leader-rank{
+      font-family:"Cinzel", serif;
+      text-transform:uppercase;
+      letter-spacing:.16em;
+      font-size:.78rem;
+      color:var(--gold);
+      margin-bottom:10px;
+      position:relative;
+      z-index:1;
+    }
+
+    .leader-name{
+      margin:0;
+      font-family:"Cinzel", serif;
+      font-size:clamp(2rem, 4vw, 3.8rem);
+      line-height:1.02;
+      color:var(--leaderAccent);
+      text-shadow:0 0 20px var(--leaderGlow);
+      position:relative;
+      z-index:1;
+      text-wrap:balance;
+    }
+
+    .leader-score-label{
+      margin-top:18px;
+      font-family:"Cinzel", serif;
+      text-transform:uppercase;
+      letter-spacing:.14em;
+      font-size:.8rem;
+      color:#e4d7bb;
+      position:relative;
+      z-index:1;
+    }
+
+    .leader-score{
+      margin:10px 0 0;
+      font-family:"Cinzel", serif;
+      font-size:clamp(3rem, 7vw, 6rem);
+      line-height:1;
+      color:var(--leaderAccent);
+      text-shadow:0 0 26px var(--leaderGlow);
+      position:relative;
+      z-index:1;
+    }
+
+    .right-panel{
+      padding:20px;
+      display:grid;
+      grid-template-rows:auto 1fr;
+      gap:14px;
+      min-height:0;
+    }
+
+    .right-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:14px;
+    }
+
+    .right-head h2{
+      margin:0;
+      font-family:"Cinzel", serif;
+      font-size:1.3rem;
+    }
+
+    .refresh-badge{
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.04);
+      font-family:"Cinzel", serif;
+      font-size:.72rem;
+      letter-spacing:.06em;
+      color:var(--muted);
+      white-space:nowrap;
+    }
+
+    .ranking-list{
+      display:grid;
+      gap:12px;
+      overflow:hidden;
+    }
+
+    .ranking-item{
+      display:grid;
+      grid-template-columns:60px 68px 1fr auto;
+      align-items:center;
+      gap:14px;
+      padding:14px 16px;
+      border-radius:22px;
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.07);
+      min-height:84px;
+    }
+
+    .rank-num{
+      font-family:"Cinzel", serif;
+      font-size:1.35rem;
+      color:#f1e5c8;
+      text-align:center;
+    }
+
+    .rank-logo{
+      width:56px;
+      height:56px;
+      border-radius:18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:8px;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .rank-logo img{
+      width:100%;
+      height:100%;
+      object-fit:contain;
+    }
+
+    .rank-name{
+      font-family:"Cinzel", serif;
+      font-size:.98rem;
+      line-height:1.2;
+      text-wrap:balance;
+    }
+
+    .rank-score{
+      font-family:"Cinzel", serif;
+      font-size:1.5rem;
+      line-height:1;
+      color:var(--itemAccent);
+      text-shadow:0 0 18px var(--itemGlow);
+      min-width:84px;
+      text-align:right;
+    }
+
+    .footer{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:20px;
+      color:var(--muted);
+      font-size:1rem;
+    }
+
+    .footer strong{
+      color:#f0e6cf;
+    }
+
+    .pulse-dot{
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      background:#7ef0a8;
+      box-shadow:0 0 12px #7ef0a8;
+      display:inline-block;
+      margin-right:8px;
+      animation:pulseDot 1.8s infinite;
+    }
+
+    @keyframes pulseDot{
+      0%{transform:scale(1);opacity:1}
+      50%{transform:scale(1.35);opacity:.65}
+      100%{transform:scale(1);opacity:1}
+    }
+
+    @keyframes floatCrown{
+      0%,100%{transform:translateY(0)}
+      50%{transform:translateY(-8px)}
+    }
+
+    .green{
+      --itemAccent:#62ec9f;
+      --itemGlow:rgba(83,210,139,.28);
+      --leaderAccent:#62ec9f;
+      --leaderGlow:rgba(83,210,139,.24);
+    }
+    .gold{
+      --itemAccent:#f0ca7c;
+      --itemGlow:rgba(226,189,116,.28);
+      --leaderAccent:#f0ca7c;
+      --leaderGlow:rgba(226,189,116,.26);
+    }
+    .red{
+      --itemAccent:#ff8b8b;
+      --itemGlow:rgba(224,107,107,.28);
+      --leaderAccent:#ff8b8b;
+      --leaderGlow:rgba(224,107,107,.26);
+    }
+    .black{
+      --itemAccent:#f0f0f0;
+      --itemGlow:rgba(200,200,200,.18);
+      --leaderAccent:#f0f0f0;
+      --leaderGlow:rgba(200,200,200,.16);
+    }
+    .bordeaux{
+      --itemAccent:#df7ea8;
+      --itemGlow:rgba(181,90,127,.28);
+      --leaderAccent:#df7ea8;
+      --leaderGlow:rgba(181,90,127,.26);
+    }
+    .blue{
+      --itemAccent:#98d1ff;
+      --itemGlow:rgba(121,191,255,.28);
+      --leaderAccent:#98d1ff;
+      --leaderGlow:rgba(121,191,255,.26);
+    }
+    .violet{
+      --itemAccent:#c39aff;
+      --itemGlow:rgba(178,132,255,.28);
+      --leaderAccent:#c39aff;
+      --leaderGlow:rgba(178,132,255,.26);
+    }
+    .orange{
+      --itemAccent:#ffc17f;
+      --itemGlow:rgba(255,175,97,.28);
+      --leaderAccent:#ffc17f;
+      --leaderGlow:rgba(255,175,97,.26);
+    }
+
+    @media (max-width: 1100px){
+      .screen{
+        height:auto;
+        min-height:100vh;
+      }
+
+      .main{
+        grid-template-columns:1fr;
+      }
+
+      .ranking-list{
+        overflow:visible;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="screen">
+    <div class="topbar">
+      <div class="title-wrap">
+        <img src="Asset%201.svg" alt="Logo La Nuit Magique">
+        <div>
+          <div class="eyebrow">Écran live</div>
+          <h1>La Bataille des Royaumes</h1>
+        </div>
+      </div>
+
+      <div class="top-right">
+        <div class="label">Mode spectacle</div>
+        <div class="value">Classement en direct</div>
+      </div>
+    </div>
+
+    <div class="main">
+      <section id="leaderPanel" class="panel leader green">
+        <div class="leader-glow"></div>
+        <div class="leader-crown">👑</div>
+        <div class="leader-logo">
+          <img id="leaderLogo" src="Alcarah.png" alt="Leader">
+        </div>
+        <div class="leader-rank">Royaume en tête</div>
+        <h2 id="leaderName" class="leader-name">Alcarah</h2>
+        <div class="leader-score-label">Points</div>
+        <p id="leaderScore" class="leader-score">0</p>
+      </section>
+
+      <section class="panel right-panel">
+        <div class="right-head">
+          <h2>Classement général</h2>
+          <div class="refresh-badge">
+            <span class="pulse-dot"></span>Actualisation auto
+          </div>
+        </div>
+
+        <div id="rankingList" class="ranking-list"></div>
+      </section>
+    </div>
+
+    <div class="footer">
+      <div><strong>La Nuit Magique</strong> — Coupe des 8 Royaumes</div>
+      <div>Page : <strong>scoreboard.html</strong></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = "https://vajvtuxjefyktalirqcf.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_aG99lJA0pJtRgUKbP7GRBw_Xz-Mj6C_";
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    const rankingList = document.getElementById("rankingList");
+    const leaderPanel = document.getElementById("leaderPanel");
+    const leaderName = document.getElementById("leaderName");
+    const leaderScore = document.getElementById("leaderScore");
+    const leaderLogo = document.getElementById("leaderLogo");
+
+    const kingdomAssets = {
+      "Alcarah": { logo: "Alcarah.png", cls: "green" },
+      "Augustus Nubium Mundus": { logo: "Augustus%20Nubium%20Mundus.png", cls: "gold" },
+      "Baldezor": { logo: "Baldezor.png", cls: "red" },
+      "Les Ombres de Grimelfe": { logo: "Grimelfe%20NV.png", cls: "black" },
+      "Lunerei": { logo: "Lunerei.png", cls: "bordeaux" },
+      "Sappheiros": { logo: "Sappheiros.png", cls: "blue" },
+      "Les Terres de Sang": { logo: "TDS%20NV.png", cls: "violet" },
+      "Témeriah": { logo: "Temeriah.png", cls: "orange" }
+    };
+
+    function renderRanking(sortedData) {
+      if (!sortedData.length) {
+        rankingList.innerHTML = "";
+        return;
+      }
+
+      const leader = sortedData[0];
+      const leaderAsset = kingdomAssets[leader.name] || { logo: "", cls: "gold" };
+
+      leaderPanel.className = `panel leader ${leaderAsset.cls}`;
+      leaderName.textContent = leader.name;
+      leaderScore.textContent = leader.score;
+      leaderLogo.src = leaderAsset.logo;
+      leaderLogo.alt = leader.name;
+
+      rankingList.innerHTML = sortedData.map((row, index) => {
+        const asset = kingdomAssets[row.name] || { logo: "", cls: "gold" };
+
+        return `
+          <article class="ranking-item ${asset.cls}">
+            <div class="rank-num">#${index + 1}</div>
+            <div class="rank-logo">
+              <img src="${asset.logo}" alt="${row.name}">
+            </div>
+            <div class="rank-name">${row.name}</div>
+            <div class="rank-score">${row.score}</div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    async function loadScores() {
+      const { data, error } = await supabaseClient
+        .from("kingdoms")
+        .select("name, score");
+
+      if (error) {
+        console.error("Erreur chargement scoreboard :", error);
+        return;
+      }
+
+      const sortedData = [...data].sort((a, b) => b.score - a.score || a.name.localeCompare(b.name));
+      renderRanking(sortedData);
+    }
+
+    loadScores();
+    setInterval(loadScores, 5000);
+  </script>
+</body>
+</html>
