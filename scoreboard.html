@@ -16,6 +16,7 @@
       --text:#f7f0e6;
       --muted:#b8af9f;
       --gold:#e0ba73;
+      --gold-2:#f3d79b;
       --line:rgba(255,255,255,.08);
       --shadow:0 30px 80px rgba(0,0,0,.45);
     }
@@ -57,9 +58,10 @@
       height:100%;
       display:grid;
       grid-template-rows:auto 1fr auto;
-      padding:24px;
+      padding:22px;
       position:relative;
       z-index:1;
+      gap:18px;
     }
 
     .topbar{
@@ -119,12 +121,9 @@
 
     .main{
       display:grid;
-      grid-template-columns:1.1fr .9fr;
-      gap:24px;
-      align-items:stretch;
+      grid-template-columns:1.05fr .95fr;
+      gap:22px;
       min-height:0;
-      padding-top:20px;
-      padding-bottom:20px;
     }
 
     .panel{
@@ -146,110 +145,133 @@
       pointer-events:none;
     }
 
-    .leader{
-      padding:30px;
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
+    /* LEFT SIDE / CUP */
+    .cup-panel{
+      padding:28px;
+      display:grid;
+      grid-template-rows:auto 1fr auto;
       align-items:center;
       text-align:center;
-      position:relative;
-      min-height:100%;
     }
 
-    .leader-glow{
-      position:absolute;
-      width:380px;
-      height:380px;
-      border-radius:50%;
-      background:radial-gradient(circle, var(--leaderGlow), transparent 65%);
-      opacity:.7;
-      filter:blur(8px);
-      pointer-events:none;
-    }
-
-    .leader-crown{
-      font-size:4rem;
-      line-height:1;
-      margin-bottom:12px;
-      filter:drop-shadow(0 0 16px rgba(255,215,120,.45));
-      animation:floatCrown 2.8s ease-in-out infinite;
+    .cup-top{
       position:relative;
       z-index:1;
     }
 
-    .leader-logo{
-      width:150px;
-      height:150px;
-      border-radius:28px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:16px;
-      background:rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.10);
-      margin-bottom:18px;
-      position:relative;
-      z-index:1;
-    }
-
-    .leader-logo img{
-      width:100%;
-      height:100%;
-      object-fit:contain;
-      filter:drop-shadow(0 12px 16px rgba(0,0,0,.25));
-    }
-
-    .leader-rank{
+    .cup-top .small{
       font-family:"Cinzel", serif;
       text-transform:uppercase;
       letter-spacing:.16em;
       font-size:.78rem;
       color:var(--gold);
-      margin-bottom:10px;
+      margin-bottom:8px;
+    }
+
+    .cup-top h2{
+      margin:0;
+      font-family:"Cinzel", serif;
+      font-size:clamp(1.7rem, 3vw, 2.8rem);
+      line-height:1.05;
+    }
+
+    .cup-stage{
+      position:relative;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:0;
+    }
+
+    .cup-glow{
+      position:absolute;
+      width:min(42vw, 520px);
+      height:min(42vw, 520px);
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(224,186,115,.22), rgba(224,186,115,.08), transparent 68%);
+      filter:blur(10px);
+      pointer-events:none;
+    }
+
+    .cup-wrap{
       position:relative;
       z-index:1;
+      width:min(70%, 500px);
+      max-height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      filter:drop-shadow(0 24px 32px rgba(0,0,0,.35));
+    }
+
+    .cup-svg{
+      width:100%;
+      height:auto;
+      display:block;
+    }
+
+    .kingdom-badge{
+      position:absolute;
+      left:50%;
+      top:67%;
+      transform:translate(-50%, -50%);
+      width:140px;
+      height:140px;
+      border-radius:28px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:16px;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.14);
+      backdrop-filter:blur(4px);
+      box-shadow:0 20px 40px rgba(0,0,0,.25);
+    }
+
+    .kingdom-badge img{
+      width:100%;
+      height:100%;
+      object-fit:contain;
+      filter:drop-shadow(0 8px 12px rgba(0,0,0,.25));
+    }
+
+    .cup-bottom{
+      position:relative;
+      z-index:1;
+      display:grid;
+      gap:8px;
+    }
+
+    .leader-line{
+      font-family:"Cinzel", serif;
+      text-transform:uppercase;
+      letter-spacing:.16em;
+      font-size:.76rem;
+      color:#f0d9a0;
     }
 
     .leader-name{
-      margin:0;
       font-family:"Cinzel", serif;
-      font-size:clamp(2rem, 4vw, 3.8rem);
-      line-height:1.02;
-      color:var(--leaderAccent);
-      text-shadow:0 0 20px var(--leaderGlow);
-      position:relative;
-      z-index:1;
-      text-wrap:balance;
-    }
-
-    .leader-score-label{
-      margin-top:18px;
-      font-family:"Cinzel", serif;
-      text-transform:uppercase;
-      letter-spacing:.14em;
-      font-size:.8rem;
-      color:#e4d7bb;
-      position:relative;
-      z-index:1;
+      font-size:clamp(1.6rem, 2.4vw, 2.6rem);
+      color:#fff0cc;
+      text-shadow:0 0 18px rgba(224,186,115,.22);
+      line-height:1.05;
     }
 
     .leader-score{
-      margin:10px 0 0;
       font-family:"Cinzel", serif;
-      font-size:clamp(3rem, 7vw, 6rem);
+      font-size:clamp(2.2rem, 4vw, 4rem);
+      color:var(--gold-2);
+      text-shadow:0 0 22px rgba(224,186,115,.28);
       line-height:1;
-      color:var(--leaderAccent);
-      text-shadow:0 0 26px var(--leaderGlow);
-      position:relative;
-      z-index:1;
     }
 
+    /* RIGHT SIDE / RANKING */
     .right-panel{
-      padding:20px;
+      padding:18px;
       display:grid;
       grid-template-rows:auto 1fr;
-      gap:14px;
+      gap:12px;
       min-height:0;
     }
 
@@ -263,7 +285,7 @@
     .right-head h2{
       margin:0;
       font-family:"Cinzel", serif;
-      font-size:1.3rem;
+      font-size:1.2rem;
     }
 
     .refresh-badge{
@@ -272,7 +294,7 @@
       border:1px solid rgba(255,255,255,.10);
       background:rgba(255,255,255,.04);
       font-family:"Cinzel", serif;
-      font-size:.72rem;
+      font-size:.68rem;
       letter-spacing:.06em;
       color:var(--muted);
       white-space:nowrap;
@@ -280,39 +302,60 @@
 
     .ranking-list{
       display:grid;
-      gap:12px;
-      overflow:hidden;
+      grid-template-rows:repeat(8, minmax(0, 1fr));
+      gap:8px;
+      min-height:0;
     }
 
     .ranking-item{
       display:grid;
-      grid-template-columns:60px 68px 1fr auto;
+      grid-template-columns:52px 52px 1fr auto;
       align-items:center;
-      gap:14px;
-      padding:14px 16px;
-      border-radius:22px;
+      gap:12px;
+      padding:10px 14px;
+      border-radius:20px;
       background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
       border:1px solid rgba(255,255,255,.07);
-      min-height:84px;
+      min-height:0;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .ranking-item::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(90deg, var(--itemGlow), transparent 60%);
+      opacity:.45;
+      pointer-events:none;
+    }
+
+    .ranking-item.top-1{
+      border-color:rgba(224,186,115,.28);
+      box-shadow:0 0 0 1px rgba(224,186,115,.08), inset 0 0 18px rgba(224,186,115,.05);
     }
 
     .rank-num{
       font-family:"Cinzel", serif;
-      font-size:1.35rem;
+      font-size:1.15rem;
       color:#f1e5c8;
       text-align:center;
+      position:relative;
+      z-index:1;
     }
 
     .rank-logo{
-      width:56px;
-      height:56px;
-      border-radius:18px;
+      width:48px;
+      height:48px;
+      border-radius:14px;
       display:flex;
       align-items:center;
       justify-content:center;
-      padding:8px;
+      padding:6px;
       background:rgba(255,255,255,.04);
       border:1px solid rgba(255,255,255,.08);
+      position:relative;
+      z-index:1;
     }
 
     .rank-logo img{
@@ -323,19 +366,22 @@
 
     .rank-name{
       font-family:"Cinzel", serif;
-      font-size:.98rem;
-      line-height:1.2;
-      text-wrap:balance;
+      font-size:.88rem;
+      line-height:1.15;
+      position:relative;
+      z-index:1;
     }
 
     .rank-score{
       font-family:"Cinzel", serif;
-      font-size:1.5rem;
+      font-size:1.25rem;
       line-height:1;
       color:var(--itemAccent);
       text-shadow:0 0 18px var(--itemGlow);
-      min-width:84px;
+      min-width:72px;
       text-align:right;
+      position:relative;
+      z-index:1;
     }
 
     .footer{
@@ -368,72 +414,59 @@
       100%{transform:scale(1);opacity:1}
     }
 
-    @keyframes floatCrown{
-      0%,100%{transform:translateY(0)}
-      50%{transform:translateY(-8px)}
-    }
-
     .green{
       --itemAccent:#62ec9f;
-      --itemGlow:rgba(83,210,139,.28);
-      --leaderAccent:#62ec9f;
-      --leaderGlow:rgba(83,210,139,.24);
+      --itemGlow:rgba(83,210,139,.25);
     }
     .gold{
       --itemAccent:#f0ca7c;
-      --itemGlow:rgba(226,189,116,.28);
-      --leaderAccent:#f0ca7c;
-      --leaderGlow:rgba(226,189,116,.26);
+      --itemGlow:rgba(226,189,116,.25);
     }
     .red{
       --itemAccent:#ff8b8b;
-      --itemGlow:rgba(224,107,107,.28);
-      --leaderAccent:#ff8b8b;
-      --leaderGlow:rgba(224,107,107,.26);
+      --itemGlow:rgba(224,107,107,.25);
     }
     .black{
       --itemAccent:#f0f0f0;
-      --itemGlow:rgba(200,200,200,.18);
-      --leaderAccent:#f0f0f0;
-      --leaderGlow:rgba(200,200,200,.16);
+      --itemGlow:rgba(200,200,200,.16);
     }
     .bordeaux{
       --itemAccent:#df7ea8;
-      --itemGlow:rgba(181,90,127,.28);
-      --leaderAccent:#df7ea8;
-      --leaderGlow:rgba(181,90,127,.26);
+      --itemGlow:rgba(181,90,127,.25);
     }
     .blue{
       --itemAccent:#98d1ff;
-      --itemGlow:rgba(121,191,255,.28);
-      --leaderAccent:#98d1ff;
-      --leaderGlow:rgba(121,191,255,.26);
+      --itemGlow:rgba(121,191,255,.25);
     }
     .violet{
       --itemAccent:#c39aff;
-      --itemGlow:rgba(178,132,255,.28);
-      --leaderAccent:#c39aff;
-      --leaderGlow:rgba(178,132,255,.26);
+      --itemGlow:rgba(178,132,255,.25);
     }
     .orange{
       --itemAccent:#ffc17f;
-      --itemGlow:rgba(255,175,97,.28);
-      --leaderAccent:#ffc17f;
-      --leaderGlow:rgba(255,175,97,.26);
+      --itemGlow:rgba(255,175,97,.25);
     }
 
-    @media (max-width: 1100px){
+    @media (max-width: 1200px){
+      .main{
+        grid-template-columns:1fr;
+      }
+
+      body{
+        overflow:auto;
+      }
+
       .screen{
         height:auto;
         min-height:100vh;
       }
 
-      .main{
-        grid-template-columns:1fr;
+      .ranking-list{
+        grid-template-rows:none;
       }
 
-      .ranking-list{
-        overflow:visible;
+      .cup-wrap{
+        width:min(70%, 380px);
       }
     }
   </style>
@@ -456,21 +489,118 @@
     </div>
 
     <div class="main">
-      <section id="leaderPanel" class="panel leader green">
-        <div class="leader-glow"></div>
-        <div class="leader-crown">👑</div>
-        <div class="leader-logo">
-          <img id="leaderLogo" src="Alcarah.png" alt="Leader">
+      <section class="panel cup-panel">
+        <div class="cup-top">
+          <div class="small">La coupe des royaumes</div>
+          <h2>Le trône du vainqueur</h2>
         </div>
-        <div class="leader-rank">Royaume en tête</div>
-        <h2 id="leaderName" class="leader-name">Alcarah</h2>
-        <div class="leader-score-label">Points</div>
-        <p id="leaderScore" class="leader-score">0</p>
+
+        <div class="cup-stage">
+          <div class="cup-glow"></div>
+
+          <div class="cup-wrap">
+            <svg class="cup-svg" viewBox="0 0 600 700" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <defs>
+                <linearGradient id="goldMain" x1="0" x2="1">
+                  <stop offset="0%" stop-color="#7a5622"/>
+                  <stop offset="20%" stop-color="#c99a4c"/>
+                  <stop offset="50%" stop-color="#f1d08d"/>
+                  <stop offset="80%" stop-color="#b98535"/>
+                  <stop offset="100%" stop-color="#5e3d12"/>
+                </linearGradient>
+
+                <linearGradient id="goldDark" x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0%" stop-color="#d8b06b"/>
+                  <stop offset="100%" stop-color="#7b551f"/>
+                </linearGradient>
+
+                <radialGradient id="shine" cx="50%" cy="30%" r="60%">
+                  <stop offset="0%" stop-color="rgba(255,255,255,.9)"/>
+                  <stop offset="40%" stop-color="rgba(255,255,255,.18)"/>
+                  <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+                </radialGradient>
+
+                <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+                  <feDropShadow dx="0" dy="25" stdDeviation="22" flood-color="rgba(0,0,0,.35)"/>
+                </filter>
+              </defs>
+
+              <g filter="url(#shadow)">
+                <!-- blades / throne vibe -->
+                <g opacity=".9">
+                  <path d="M130 178 L165 55 L210 188 Z" fill="url(#goldDark)" opacity=".55"/>
+                  <path d="M195 168 L235 28 L280 178 Z" fill="url(#goldDark)" opacity=".62"/>
+                  <path d="M260 160 L300 18 L340 160 Z" fill="url(#goldDark)" opacity=".74"/>
+                  <path d="M320 168 L365 28 L405 178 Z" fill="url(#goldDark)" opacity=".62"/>
+                  <path d="M390 178 L435 55 L470 188 Z" fill="url(#goldDark)" opacity=".55"/>
+                </g>
+
+                <!-- handles -->
+                <path d="M158 205
+                         C80 210, 62 276, 94 325
+                         C118 362, 175 363, 210 334"
+                      fill="none" stroke="url(#goldMain)" stroke-width="22" stroke-linecap="round"/>
+                <path d="M442 205
+                         C520 210, 538 276, 506 325
+                         C482 362, 425 363, 390 334"
+                      fill="none" stroke="url(#goldMain)" stroke-width="22" stroke-linecap="round"/>
+
+                <!-- upper cup -->
+                <path d="M150 170
+                         Q300 122 450 170
+                         L412 330
+                         Q300 370 188 330
+                         Z"
+                      fill="url(#goldMain)" stroke="#f0d08c" stroke-width="3"/>
+
+                <!-- decorative rim -->
+                <path d="M145 166 Q300 112 455 166"
+                      fill="none" stroke="#f5e1b0" stroke-width="8" stroke-linecap="round"/>
+
+                <!-- center plate -->
+                <path d="M225 240
+                         Q300 210 375 240
+                         L355 318
+                         Q300 338 245 318
+                         Z"
+                      fill="#2d1c09" opacity=".55" stroke="#f0d08c" stroke-width="2"/>
+
+                <!-- stem -->
+                <path d="M255 334
+                         Q300 365 345 334
+                         L326 470
+                         Q300 485 274 470 Z"
+                      fill="url(#goldMain)" stroke="#e7c57d" stroke-width="2"/>
+
+                <!-- base top -->
+                <ellipse cx="300" cy="505" rx="118" ry="28" fill="url(#goldMain)" stroke="#f0d08c" stroke-width="3"/>
+                <!-- base body -->
+                <path d="M205 505 L395 505 L430 595 Q300 640 170 595 Z"
+                      fill="url(#goldDark)" stroke="#e4be74" stroke-width="3"/>
+                <!-- base bottom -->
+                <ellipse cx="300" cy="596" rx="136" ry="34" fill="url(#goldMain)" stroke="#f0d08c" stroke-width="3"/>
+
+                <!-- front shine -->
+                <ellipse cx="300" cy="250" rx="115" ry="92" fill="url(#shine)" opacity=".38"/>
+              </g>
+            </svg>
+
+            <div class="kingdom-badge">
+              <img id="leaderLogo" src="Alcarah.png" alt="Leader">
+            </div>
+          </div>
+        </div>
+
+        <div class="cup-bottom">
+          <div class="leader-line">Royaume en tête</div>
+          <div id="leaderName" class="leader-name">Alcarah</div>
+          <div id="leaderScore" class="leader-score">0 pts</div>
+        </div>
       </section>
 
       <section class="panel right-panel">
         <div class="right-head">
-          <h2>Classement général</h2>
+          <h2>Classement des 8 royaumes</h2>
           <div class="refresh-badge">
             <span class="pulse-dot"></span>Actualisation auto
           </div>
@@ -493,7 +623,6 @@
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     const rankingList = document.getElementById("rankingList");
-    const leaderPanel = document.getElementById("leaderPanel");
     const leaderName = document.getElementById("leaderName");
     const leaderScore = document.getElementById("leaderScore");
     const leaderLogo = document.getElementById("leaderLogo");
@@ -510,17 +639,18 @@
     };
 
     function renderRanking(sortedData) {
-      if (!sortedData.length) {
+      if (!sortedData || !sortedData.length) {
         rankingList.innerHTML = "";
+        leaderName.textContent = "Aucune donnée";
+        leaderScore.textContent = "0 pts";
         return;
       }
 
       const leader = sortedData[0];
       const leaderAsset = kingdomAssets[leader.name] || { logo: "", cls: "gold" };
 
-      leaderPanel.className = `panel leader ${leaderAsset.cls}`;
       leaderName.textContent = leader.name;
-      leaderScore.textContent = leader.score;
+      leaderScore.textContent = `${leader.score} pts`;
       leaderLogo.src = leaderAsset.logo;
       leaderLogo.alt = leader.name;
 
@@ -528,8 +658,8 @@
         const asset = kingdomAssets[row.name] || { logo: "", cls: "gold" };
 
         return `
-          <article class="ranking-item ${asset.cls}">
-            <div class="rank-num">#${index + 1}</div>
+          <article class="ranking-item ${asset.cls} ${index === 0 ? "top-1" : ""}">
+            <div class="rank-num">${index === 0 ? "👑" : "#" + (index + 1)}</div>
             <div class="rank-logo">
               <img src="${asset.logo}" alt="${row.name}">
             </div>
