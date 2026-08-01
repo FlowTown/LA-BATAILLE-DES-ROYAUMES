@@ -117,17 +117,18 @@ button:hover{
             Chargement...
         </div>
 
-        <button>+100</button>
-        <button>+1000</button>
-        <button>+10000</button>
+      <button onclick="addPoints(100)">+100</button>
+<button onclick="addPoints(1000)">+1000</button>
+<button onclick="addPoints(10000)">+10000</button>
 
-        <input
-            id="customPoints"
-            type="number"
-            placeholder="Valeur personnalisée">
+<input
+    id="customPoints"
+    type="number"
+    placeholder="Valeur personnalisée">
 
-        <button>
-            Ajouter
+<button onclick="addCustomPoints()">
+    Ajouter
+</button>
         </button>
 
         <p id="message"></p>
@@ -225,7 +226,62 @@ function updateCurrentScore(){
         kingdom.score.toLocaleString("fr-FR")+" points";
 
 }
+async function addPoints(points){
 
+    const id = Number(document.getElementById("kingdomSelect").value);
+
+    const kingdom = kingdoms.find(k => k.id === id);
+
+    if(!kingdom) return;
+
+    const nouveauScore = kingdom.score + points;
+
+    const { error } = await supabaseClient
+        .from("kingdoms")
+        .update({
+            score: nouveauScore
+        })
+        .eq("id", id);
+
+    const message = document.getElementById("message");
+
+    if(error){
+
+        console.error(error);
+
+        message.style.color = "#ff6666";
+        message.innerHTML = "❌ " + error.message;
+
+        return;
+
+    }
+
+    kingdom.score = nouveauScore;
+
+    updateCurrentScore();
+
+    message.style.color = "#64ff64";
+    message.innerHTML = "✅ +" + points + " points ajoutés à <b>" + kingdom.name + "</b>";
+
+}
+
+function addCustomPoints(){
+
+    const points = Number(document.getElementById("customPoints").value);
+
+    if(!points){
+
+        alert("Entre une valeur");
+
+        return;
+
+    }
+
+    addPoints(points);
+
+    document.getElementById("customPoints").value = "";
+
+}
 </script>
 
 </body>
