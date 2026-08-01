@@ -1,111 +1,94 @@
 <!DOCTYPE html>
+
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Master Score</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<style>
-body{font-family:Arial;background:#111;color:#fff;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0}
-.card{background:#1d1d1d;padding:28px;border-radius:14px;width:380px;box-shadow:0 0 20px rgba(0,0,0,.4)}
-input,select,button{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:none;box-sizing:border-box}
-button{background:#d6b16a;font-weight:bold;cursor:pointer}
-.row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
-#panel{display:none}
-#msg{margin-top:10px;color:#7dff9a;font-weight:bold}
-</style>
-</head>
-<body>
-<div class="card">
-<div id="loginBox">
-<h2>Master Score</h2>
-<input id="login" placeholder="Identifiant">
-<input id="password" type="password" placeholder="Mot de passe">
-<button onclick="login()">Connexion</button>
-</div>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>La Bataille des Royaumes</title>
 
-<div id="panel">
-<h2>Master Score</h2>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-<select id="kingdomSelect"></select>
+  <style>
+    :root{
+      --bg:#05070d;
+      --bg2:#0a0e18;
+      --text:#f5efe6;
+      --muted:#b9b2a7;
+      --gold:#d6b16a;
+      --line:rgba(255,255,255,.08);
+      --shadow:0 24px 60px rgba(0,0,0,.38);
+    }
 
-<p>Score actuel : <strong id="currentScore">0</strong></p>
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
 
-<div class="row">
-<button onclick="addPoints(100)">+100</button>
-<button onclick="addPoints(1000)">+1000</button>
-<button onclick="addPoints(10000)">+10000</button>
-</div>
+    body{
+      margin:0;
+      color:var(--text);
+      font-family:"Cormorant Garamond", serif;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(214,177,106,.10), transparent 30%),
+        radial-gradient(circle at 15% 20%, rgba(82,125,255,.08), transparent 20%),
+        radial-gradient(circle at 85% 20%, rgba(153,84,255,.09), transparent 20%),
+        radial-gradient(circle at 50% 100%, rgba(255,255,255,.04), transparent 25%),
+        linear-gradient(180deg, #09101d 0%, #04070d 100%);
+      min-height:100vh;
+      overflow-x:hidden;
+      position:relative;
+    }
 
-<input id="customPoints" type="number" placeholder="Valeur personnalisée">
-<button onclick="addCustom()">Ajouter</button>
+    body::before,
+    body::after{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:0;
+    }
 
-<p id="msg"></p>
-</div>
-</div>
+    body::before{
+      opacity:.32;
+      background-image:
+        radial-gradient(2px 2px at 12% 18%, rgba(255,255,255,.8) 40%, transparent 45%),
+        radial-gradient(1.5px 1.5px at 24% 72%, rgba(255,255,255,.55) 40%, transparent 45%),
+        radial-gradient(2px 2px at 42% 30%, rgba(255,255,255,.4) 40%, transparent 45%),
+        radial-gradient(1px 1px at 61% 16%, rgba(255,255,255,.65) 40%, transparent 45%),
+        radial-gradient(1.5px 1.5px at 76% 66%, rgba(255,255,255,.55) 40%, transparent 45%),
+        radial-gradient(2px 2px at 89% 24%, rgba(255,255,255,.5) 40%, transparent 45%),
+        radial-gradient(1.5px 1.5px at 84% 85%, rgba(255,255,255,.45) 40%, transparent 45%);
+    }
 
-<script>
-const SUPABASE_URL="https://vajvtuxjefyktalirqcf.supabase.co";
-const SUPABASE_KEY="sb_publishable_aG99lJA0pJtRgUKbP7GRBw_Xz-Mj6C_";
-const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+    body::after{
+      opacity:.18;
+      background:
+        radial-gradient(circle at 20% 40%, rgba(255,255,255,.08), transparent 20%),
+        radial-gradient(circle at 80% 60%, rgba(255,255,255,.06), transparent 18%);
+      filter:blur(40px);
+    }
 
-const ADMIN_ID="Dieudesages";
-const ADMIN_PASSWORD="Tadé172107";
+    img{display:block;max-width:100%}
+    a{text-decoration:none;color:inherit}
 
-let kingdoms=[];
+    .container{
+      width:min(1280px, calc(100% - 28px));
+      margin:0 auto;
+      position:relative;
+      z-index:1;
+    }
 
-function login(){
- if(login.value===ADMIN_ID && password.value===ADMIN_PASSWORD){
-   loginBox.style.display="none";
-   panel.style.display="block";
-   loadKingdoms();
- }else alert("Identifiants incorrects");
-}
+    header{
+      position:sticky;
+      top:0;
+      z-index:30;
+      background:rgba(5,7,13,.62);
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid rgba(255,255,255,.05);
+    }
 
-async function loadKingdoms(){
- const {data,error}=await supabaseClient.from("kingdoms").select("id,name,score");
- if(error){alert(error.message);console.error(error);return;}
- kingdoms=data.sort((a,b)=>a.id-b.id);
- kingdomSelect.innerHTML="";
- kingdoms.forEach(k=>{
-   kingdomSelect.innerHTML+=`<option value="${k.id}">${k.name}</option>`;
- });
- kingdomSelect.onchange=updateScore;
- updateScore();
-}
-
-function updateScore(){
- const id=parseInt(kingdomSelect.value);
- const k=kingdoms.find(x=>x.id===id);
- if(!k)return;
- currentScore.textContent=k.score.toLocaleString("fr-FR")+" points";
-}
-
-async function addPoints(value){
- const id=parseInt(kingdomSelect.value);
- const k=kingdoms.find(x=>x.id===id);
- if(!k)return;
-
- const newScore=k.score+value;
-
- const {error}=await supabaseClient
- .from("kingdoms")
- .update({score:newScore})
- .eq("id",id);
-
- if(error){alert(error.message);return;}
-
- k.score=newScore;
- updateScore();
- msg.textContent=`+${value} points ajoutés à ${k.name}`;
-}
-
-function addCustom(){
- const value=parseInt(customPoints.value);
- if(!value||value===0){alert("Entre une valeur");return;}
- addPoints(value);
- customPoints.value="";
-}
-</script>
-</body>
-</html>
+    .topbar{
+      min-height:82px;
+      display:flex;
+      align-items:center;
+      j
