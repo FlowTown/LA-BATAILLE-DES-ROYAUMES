@@ -8,78 +8,151 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-body{
+*{
+    box-sizing:border-box;
     margin:0;
-    font-family:Arial,sans-serif;
+    padding:0;
+}
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
     background:#111;
     color:white;
     display:flex;
     justify-content:center;
     align-items:center;
-    height:100vh;
+    min-height:100vh;
 }
 
-#loginBox,#panel{
-    background:#1f1f1f;
+.container{
+    width:400px;
+    background:#1d1d1d;
     padding:30px;
     border-radius:12px;
-    width:350px;
     box-shadow:0 0 20px rgba(0,0,0,.4);
+}
+
+h1{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+input,select{
+    width:100%;
+    padding:12px;
+    margin:10px 0 20px;
+    border:none;
+    border-radius:8px;
+    font-size:16px;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    border:none;
+    border-radius:8px;
+    background:#d4af37;
+    color:black;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+button:hover{
+    opacity:.9;
 }
 
 #panel{
     display:none;
 }
 
-input{
-    width:100%;
-    padding:12px;
-    margin-top:10px;
-    margin-bottom:15px;
-    border:none;
-    border-radius:6px;
-    box-sizing:border-box;
+.score{
+    font-size:22px;
+    font-weight:bold;
+    text-align:center;
+    margin:20px 0;
 }
 
-button{
-    width:100%;
-    padding:12px;
-    border:none;
-    border-radius:6px;
-    background:#d4af37;
-    color:black;
-    font-weight:bold;
-    cursor:pointer;
+#message{
+    text-align:center;
+    margin-top:20px;
+    color:#64ff64;
 }
 </style>
+
 </head>
 <body>
 
-<div id="loginBox">
-    <h2>Master Score</h2>
+<div class="container">
 
-    <input id="login" placeholder="Identifiant">
-    <input id="password" type="password" placeholder="Mot de passe">
+    <div id="loginBox">
 
-    <button onclick="connexion()">Connexion</button>
-</div>
+        <h1>Master Score</h1>
 
-<div id="panel">
-    <h2>Connexion réussie ✅</h2>
+        <input
+            id="login"
+            placeholder="Identifiant">
+
+        <input
+            id="password"
+            type="password"
+            placeholder="Mot de passe">
+
+        <button onclick="connexion()">
+            Connexion
+        </button>
+
+    </div>
+
+    <div id="panel">
+
+        <h1>Master Score</h1>
+
+        <label>Royaume</label>
+
+        <select id="kingdomSelect"></select>
+
+        <div class="score" id="currentScore">
+            Chargement...
+        </div>
+
+        <button>+100</button>
+        <button>+1000</button>
+        <button>+10000</button>
+
+        <input
+            id="customPoints"
+            type="number"
+            placeholder="Valeur personnalisée">
+
+        <button>
+            Ajouter
+        </button>
+
+        <p id="message"></p>
+
+    </div>
+
 </div>
 
 <script>
 
 const SUPABASE_URL = "https://vajvtuxjefyktalirqcf.supabase.co";
-const SUPABASE_KEY = "TA_CLE";
+const SUPABASE_KEY = "TA_CLE_PUBLISHABLE";
 
 const supabaseClient = window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
 );
 
-const ADMIN_ID = "Dieudesages";
-const ADMIN_PASSWORD = "Tadé172107";
+// Ton identifiant
+const ADMIN_ID = "florian";
+
+// Ton mot de passe
+const ADMIN_PASSWORD = "1234";
+
+let kingdoms = [];
 
 function connexion(){
 
@@ -87,11 +160,69 @@ function connexion(){
     const mdp = document.getElementById("password").value;
 
     if(id===ADMIN_ID && mdp===ADMIN_PASSWORD){
+
         document.getElementById("loginBox").style.display="none";
         document.getElementById("panel").style.display="block";
+
+        loadKingdoms();
+
     }else{
+
         alert("Identifiants incorrects");
+
     }
+
+}
+
+async function loadKingdoms(){
+
+    const { data, error } = await supabaseClient
+        .from("kingdoms")
+        .select("*")
+        .order("id");
+
+    if(error){
+
+        console.error(error);
+        alert("Erreur Supabase");
+
+        return;
+
+    }
+
+    kingdoms = data;
+
+    const select = document.getElementById("kingdomSelect");
+
+    select.innerHTML = "";
+
+    kingdoms.forEach(k=>{
+
+        const option=document.createElement("option");
+
+        option.value=k.id;
+        option.textContent=k.name;
+
+        select.appendChild(option);
+
+    });
+
+    select.addEventListener("change",updateCurrentScore);
+
+    updateCurrentScore();
+
+}
+
+function updateCurrentScore(){
+
+    const id=Number(document.getElementById("kingdomSelect").value);
+
+    const kingdom=kingdoms.find(k=>k.id===id);
+
+    if(!kingdom)return;
+
+    document.getElementById("currentScore").innerHTML=
+        kingdom.score.toLocaleString("fr-FR")+" points";
 
 }
 
