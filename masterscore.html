@@ -1,292 +1,94 @@
 <!DOCTYPE html>
+
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Master Score</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>La Bataille des Royaumes</title>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-<style>
-*{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
-}
-
-body{
-    font-family:Arial, Helvetica, sans-serif;
-    background:#111;
-    color:white;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    min-height:100vh;
-}
-
-.container{
-    width:400px;
-    background:#1d1d1d;
-    padding:30px;
-    border-radius:12px;
-    box-shadow:0 0 20px rgba(0,0,0,.4);
-}
-
-h1{
-    text-align:center;
-    margin-bottom:25px;
-}
-
-input,select{
-    width:100%;
-    padding:12px;
-    margin:10px 0 20px;
-    border:none;
-    border-radius:8px;
-    font-size:16px;
-}
-
-button{
-    width:100%;
-    padding:12px;
-    margin-top:10px;
-    border:none;
-    border-radius:8px;
-    background:#d4af37;
-    color:black;
-    font-size:16px;
-    font-weight:bold;
-    cursor:pointer;
-}
-
-button:hover{
-    opacity:.9;
-}
-
-#panel{
-    display:none;
-}
-
-.score{
-    font-size:22px;
-    font-weight:bold;
-    text-align:center;
-    margin:20px 0;
-}
-
-#message{
-    text-align:center;
-    margin-top:20px;
-    color:#64ff64;
-}
-</style>
-
-</head>
-<body>
-
-<div class="container">
-
-    <div id="loginBox">
-
-        <h1>Master Score</h1>
-
-        <input
-            id="login"
-            placeholder="Identifiant">
-
-        <input
-            id="password"
-            type="password"
-            placeholder="Mot de passe">
-
-        <button onclick="connexion()">
-            Connexion
-        </button>
-
-    </div>
-
-    <div id="panel">
-
-        <h1>Master Score</h1>
-
-        <label>Royaume</label>
-
-        <select id="kingdomSelect"></select>
-
-        <div class="score" id="currentScore">
-            Chargement...
-        </div>
-
-      <button onclick="addPoints(100)">+100</button>
-<button onclick="addPoints(1000)">+1000</button>
-<button onclick="addPoints(10000)">+10000</button>
-
-<input
-    id="customPoints"
-    type="number"
-    placeholder="Valeur personnalisée">
-
-<button onclick="addCustomPoints()">
-    Ajouter
-</button>
-        </button>
-
-        <p id="message"></p>
-
-    </div>
-
-</div>
-
-<script>
-
-const SUPABASE_URL = "https://vajvtuxjefyktalirqcf.supabase.co";
-const SUPABASE_KEY = "sb_publishable_aG99lJA0pJtRgUKbP7GRBw_Xz-Mj6C_";
-
-const supabaseClient = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-);
-
-// Ton identifiant
-const ADMIN_ID = "Dieudesages";
-
-// Ton mot de passe
-const ADMIN_PASSWORD = "Tadé172107";
-
-let kingdoms = [];
-
-function connexion(){
-
-    const id = document.getElementById("login").value;
-    const mdp = document.getElementById("password").value;
-
-    if(id===ADMIN_ID && mdp===ADMIN_PASSWORD){
-
-        document.getElementById("loginBox").style.display="none";
-        document.getElementById("panel").style.display="block";
-
-        loadKingdoms();
-
-    }else{
-
-        alert("Identifiants incorrects");
-
+  <style>
+    :root{
+      --bg:#05070d;
+      --bg2:#0a0e18;
+      --text:#f5efe6;
+      --muted:#b9b2a7;
+      --gold:#d6b16a;
+      --line:rgba(255,255,255,.08);
+      --shadow:0 24px 60px rgba(0,0,0,.38);
     }
 
-}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
 
-async function loadKingdoms(){
-
-    const { data, error } = await supabaseClient
-    .from("kingdoms")
-    .update({ score: nouveauScore })
-    .eq("id", id)
-    .select();
-
-console.log("DATA :", data);
-console.log("ERROR :", error);
-
-    if(error){
-
-        console.error(error);
-        alert("Erreur Supabase");
-
-        return;
-
+    body{
+      margin:0;
+      color:var(--text);
+      font-family:"Cormorant Garamond", serif;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(214,177,106,.10), transparent 30%),
+        radial-gradient(circle at 15% 20%, rgba(82,125,255,.08), transparent 20%),
+        radial-gradient(circle at 85% 20%, rgba(153,84,255,.09), transparent 20%),
+        radial-gradient(circle at 50% 100%, rgba(255,255,255,.04), transparent 25%),
+        linear-gradient(180deg, #09101d 0%, #04070d 100%);
+      min-height:100vh;
+      overflow-x:hidden;
+      position:relative;
     }
 
-    kingdoms = data;
-
-    const select = document.getElementById("kingdomSelect");
-
-    select.innerHTML = "";
-
-    kingdoms.forEach(k=>{
-
-        const option=document.createElement("option");
-
-        option.value=k.id;
-        option.textContent=k.name;
-
-        select.appendChild(option);
-
-    });
-
-    select.addEventListener("change",updateCurrentScore);
-
-    updateCurrentScore();
-
-}
-
-function updateCurrentScore(){
-
-    const id=Number(document.getElementById("kingdomSelect").value);
-
-    const kingdom=kingdoms.find(k=>k.id===id);
-
-    if(!kingdom)return;
-
-    document.getElementById("currentScore").innerHTML=
-        kingdom.score.toLocaleString("fr-FR")+" points";
-
-}
-async function addPoints(points){
-
-    const id = Number(document.getElementById("kingdomSelect").value);
-
-    const kingdom = kingdoms.find(k => k.id === id);
-
-    if(!kingdom) return;
-
-    const nouveauScore = kingdom.score + points;
-
-    const { error } = await supabaseClient
-        .from("kingdoms")
-        .update({
-            score: nouveauScore
-        })
-        .eq("id", id);
-
-    const message = document.getElementById("message");
-
-    if(error){
-
-        console.error(error);
-
-        message.style.color = "#ff6666";
-        message.innerHTML = "❌ " + error.message;
-
-        return;
-
+    body::before,
+    body::after{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:0;
     }
 
-    kingdom.score = nouveauScore;
-
-    updateCurrentScore();
-
-    message.style.color = "#64ff64";
-    message.innerHTML = "✅ +" + points + " points ajoutés à <b>" + kingdom.name + "</b>";
-
-}
-
-function addCustomPoints(){
-
-    const points = Number(document.getElementById("customPoints").value);
-
-    if(!points){
-
-        alert("Entre une valeur");
-
-        return;
-
+    body::before{
+      opacity:.32;
+      background-image:
+        radial-gradient(2px 2px at 12% 18%, rgba(255,255,255,.8) 40%, transparent 45%),
+        radial-gradient(1.5px 1.5px at 24% 72%, rgba(255,255,255,.55) 40%, transparent 45%),
+        radial-gradient(2px 2px at 42% 30%, rgba(255,255,255,.4) 40%, transparent 45%),
+        radial-gradient(1px 1px at 61% 16%, rgba(255,255,255,.65) 40%, transparent 45%),
+        radial-gradient(1.5px 1.5px at 76% 66%, rgba(255,255,255,.55) 40%, transparent 45%),
+        radial-gradient(2px 2px at 89% 24%, rgba(255,255,255,.5) 40%, transparent 45%),
+        radial-gradient(1.5px 1.5px at 84% 85%, rgba(255,255,255,.45) 40%, transparent 45%);
     }
 
-    addPoints(points);
+    body::after{
+      opacity:.18;
+      background:
+        radial-gradient(circle at 20% 40%, rgba(255,255,255,.08), transparent 20%),
+        radial-gradient(circle at 80% 60%, rgba(255,255,255,.06), transparent 18%);
+      filter:blur(40px);
+    }
 
-    document.getElementById("customPoints").value = "";
+    img{display:block;max-width:100%}
+    a{text-decoration:none;color:inherit}
 
-}
-</script>
+    .container{
+      width:min(1280px, calc(100% - 28px));
+      margin:0 auto;
+      position:relative;
+      z-index:1;
+    }
 
-</body>
-</html>
+    header{
+      position:sticky;
+      top:0;
+      z-index:30;
+      background:rgba(5,7,13,.62);
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid rgba(255,255,255,.05);
+    }
+
+    .topbar{
+      min-height:82px;
+      display:flex;
+      align-items:center;
+      j
