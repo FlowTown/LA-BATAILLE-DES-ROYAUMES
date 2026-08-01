@@ -178,9 +178,13 @@ function connexion(){
 async function loadKingdoms(){
 
     const { data, error } = await supabaseClient
-        .from("kingdoms")
-        .select("*")
-        .order("id");
+    .from("kingdoms")
+    .update({ score: nouveauScore })
+    .eq("id", id)
+    .select();
+
+console.log("DATA :", data);
+console.log("ERROR :", error);
 
     if(error){
 
