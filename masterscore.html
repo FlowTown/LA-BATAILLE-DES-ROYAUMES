@@ -7,98 +7,172 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <style>
-    * { box-sizing: border-box; }
+Oui — un style sombre “royaume / or” irait très bien à Master Score. Remplace ton bloc `<style>` actuel par celui-ci ; le reste du code ne change pas.
 
+```html
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  :root {
+    color-scheme: dark;
+  }
+
+  body {
+    min-height: 100vh;
+    margin: 0;
+    padding: 24px;
+    display: grid;
+    place-items: center;
+    font-family: Arial, sans-serif;
+    color: #f8f1df;
+    background:
+      radial-gradient(circle at top, #3b2b16 0%, transparent 42%),
+      linear-gradient(135deg, #080808, #17120d 55%, #080808);
+  }
+
+  .card {
+    width: min(440px, 100%);
+    padding: 34px;
+    border: 1px solid rgba(214, 177, 106, .45);
+    border-radius: 24px;
+    background: linear-gradient(
+      145deg,
+      rgba(40, 34, 27, .96),
+      rgba(20, 20, 20, .98)
+    );
+    box-shadow:
+      0 24px 70px rgba(0, 0, 0, .55),
+      inset 0 1px rgba(255, 239, 193, .08);
+  }
+
+  h1 {
+    margin: 0 0 26px;
+    color: #f3d28c;
+    font-size: 2rem;
+    letter-spacing: .5px;
+    text-align: center;
+    text-shadow: 0 2px 18px rgba(214, 177, 106, .28);
+  }
+
+  h1::after {
+    content: "✦";
+    display: block;
+    margin-top: 8px;
+    color: #d6b16a;
+    font-size: 1rem;
+  }
+
+  input,
+  select,
+  button {
+    width: 100%;
+    margin: 8px 0;
+    padding: 13px 14px;
+    border-radius: 12px;
+    border: 1px solid transparent;
+    box-sizing: border-box;
+    font: inherit;
+  }
+
+  input,
+  select {
+    color: #f8f1df;
+    outline: none;
+    background: rgba(0, 0, 0, .28);
+    border-color: rgba(255, 255, 255, .1);
+    transition: border-color .2s, box-shadow .2s;
+  }
+
+  input::placeholder {
+    color: #a69d8c;
+  }
+
+  input:focus,
+  select:focus {
+    border-color: #d6b16a;
+    box-shadow: 0 0 0 3px rgba(214, 177, 106, .16);
+  }
+
+  button {
+    color: #211607;
+    font-weight: 800;
+    cursor: pointer;
+    background: linear-gradient(135deg, #f1d68f, #b98738);
+    box-shadow: 0 5px 16px rgba(0, 0, 0, .28);
+    transition: transform .15s, filter .15s;
+  }
+
+  button:hover {
+    filter: brightness(1.08);
+    transform: translateY(-2px);
+  }
+
+  button:active {
+    transform: translateY(0);
+  }
+
+  button:disabled {
+    cursor: wait;
+    opacity: .6;
+    transform: none;
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 9px;
+    margin: 14px 0;
+  }
+
+  .row button {
+    padding: 12px 6px;
+    font-size: .9rem;
+  }
+
+  #currentScore {
+    display: inline-block;
+    margin-top: 4px;
+    color: #f3d28c;
+    font-size: 1.25rem;
+  }
+
+  #msg {
+    min-height: 22px;
+    margin: 16px 0 0;
+    color: #8df5aa;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  #msg.error {
+    color: #ff9b9b;
+  }
+
+  .logout {
+    margin-top: 16px;
+    color: #e8e1d4;
+    background: #4b453d;
+  }
+
+  @media (max-width: 420px) {
     body {
-      font-family: Arial, sans-serif;
-      background: #111;
-      color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      margin: 0;
-      padding: 16px;
+      padding: 14px;
     }
 
     .card {
-      background: #1d1d1d;
-      padding: 28px;
-      border-radius: 14px;
-      width: 100%;
-      max-width: 420px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, .4);
-    }
-
-    h1 {
-      margin-top: 0;
-      text-align: center;
-    }
-
-    input, select, button {
-      width: 100%;
-      padding: 12px;
-      margin: 8px 0;
-      border-radius: 8px;
-      border: none;
-      box-sizing: border-box;
-      font-size: 16px;
-    }
-
-    input, select {
-      background: #fff;
-      color: #111;
-    }
-
-    button {
-      background: #d6b16a;
-      color: #111;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #e8c67f;
-    }
-
-    button:disabled {
-      cursor: wait;
-      opacity: .65;
-    }
-
-    .row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
+      padding: 25px 20px;
     }
 
     .row button {
-      font-size: 14px;
+      font-size: .78rem;
     }
+  }
+</style>
+```
 
-    #panel {
-      display: none;
-    }
-
-    #msg {
-      min-height: 22px;
-      margin: 12px 0 0;
-      color: #7dff9a;
-      font-weight: bold;
-      text-align: center;
-    }
-
-    #msg.error {
-      color: #ff8d8d;
-    }
-
-    .logout {
-      background: #666;
-      color: white;
-      margin-top: 18px;
-    }
-  </style>
+Ça donne un rendu plus premium, lisible sur mobile, avec un thème or/noir cohérent avec “Master Score”.
 </head>
 
 <body>
