@@ -73,6 +73,11 @@
     .kingdom-logo { padding:0; }
     .kingdom-logo img { width:118%; height:118%; max-width:none; flex:none; object-fit:contain; object-position:center; transform:translateZ(0); }
     .kingdom-card.is-leader { background:radial-gradient(circle at 50% 18%,rgba(135,95,23,.32),transparent 43%),linear-gradient(155deg,#15110b 0%,#020202 54%,#191106 100%); }
+      /* Correction du cadrage : le visuel reste entier et centré */
+    .kingdom-logo { padding:10px; }
+    .kingdom-logo img { width:100%; height:100%; max-width:100%; object-fit:contain; object-position:center; transform:none; }
+    .kingdom-card.is-leader { background:linear-gradient(145deg,rgba(255,223,123,.36),rgba(79,43,4,.79) 53%,rgba(239,180,54,.22)); }
+    .kingdom-card.is-leader .kingdom-logo { background:#050505; }
   </style>
 </head>
 <body>
