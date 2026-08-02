@@ -582,6 +582,18 @@
     body::after { content:""; position:fixed; inset:-20%; z-index:0; pointer-events:none; opacity:.62; background-image:radial-gradient(circle,rgba(255,239,181,.92) 0 1px,transparent 1.8px),radial-gradient(circle,rgba(224,177,75,.85) 0 1.3px,transparent 2px),radial-gradient(circle,rgba(255,255,255,.75) 0 .8px,transparent 1.6px); background-size:173px 173px,241px 241px,97px 97px; background-position:20px 45px,88px 13px,35px 80px; animation:goldDustDrift 19s linear infinite; }
     .screen { z-index:1; }
     @keyframes goldDustDrift { from { transform:translate3d(-1%,-1%,0); } 50% { transform:translate3d(2%,1.5%,0); } to { transform:translate3d(-1%,-1%,0); } }
+      /* Carte gagnante : composition plus compacte et équilibrée */
+    .main { grid-template-columns:.72fr 1.28fr; gap:24px; }
+    .leader-panel { padding:22px 24px 20px; display:grid; grid-template-rows:auto auto auto; align-content:space-between; gap:16px; }
+    .leader-top { gap:4px; } .leader-top h2 { font-size:clamp(1.15rem,1.65vw,1.55rem); }
+    .leader-middle { flex:initial; min-height:0; padding:0; }
+    .leader-medallion { width:min(58%,220px); padding:10px; border-radius:24px; }
+    .leader-medallion::after { font-size:.62rem; top:8px; }
+    .leader-logo { width:100%; height:100%; max-width:100%; }
+    .leader-bottom { gap:3px; padding:12px 12px 10px; border-top:1px solid rgba(255,228,151,.3); border-bottom:1px solid rgba(255,228,151,.15); background:linear-gradient(90deg,transparent,rgba(255,221,135,.1),transparent); }
+    .leader-name { font-size:clamp(1.9rem,2.8vw,2.65rem); line-height:1.06; }
+    .leader-score { font-size:clamp(2.7rem,4.25vw,4rem); line-height:1; }
+    @media (max-width:1280px) { .main { grid-template-columns:1fr; } .leader-medallion { width:min(50%,220px); } }
   </style>
 </head>
 <body>
