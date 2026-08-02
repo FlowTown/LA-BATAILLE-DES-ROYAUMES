@@ -1,111 +1,342 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Master Score</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<style>
-body{font-family:Arial;background:#111;color:#fff;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0}
-.card{background:#1d1d1d;padding:28px;border-radius:14px;width:380px;box-shadow:0 0 20px rgba(0,0,0,.4)}
-input,select,button{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:none;box-sizing:border-box}
-button{background:#d6b16a;font-weight:bold;cursor:pointer}
-.row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
-#panel{display:none}
-#msg{margin-top:10px;color:#7dff9a;font-weight:bold}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Master Score — Administration</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 16px;
+    }
+
+    .card {
+      background: #1d1d1d;
+      padding: 28px;
+      border-radius: 14px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, .4);
+    }
+
+    h1 {
+      margin-top: 0;
+      text-align: center;
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border-radius: 8px;
+      border: none;
+      box-sizing: border-box;
+      font-size: 16px;
+    }
+
+    input, select {
+      background: #fff;
+      color: #111;
+    }
+
+    button {
+      background: #d6b16a;
+      color: #111;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #e8c67f;
+    }
+
+    button:disabled {
+      cursor: wait;
+      opacity: .65;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .row button {
+      font-size: 14px;
+    }
+
+    #panel {
+      display: none;
+    }
+
+    #msg {
+      min-height: 22px;
+      margin: 12px 0 0;
+      color: #7dff9a;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    #msg.error {
+      color: #ff8d8d;
+    }
+
+    .logout {
+      background: #666;
+      color: white;
+      margin-top: 18px;
+    }
+  </style>
 </head>
+
 <body>
-<div class="card">
-<div id="loginBox">
-<h2>Master Score</h2>
-<input id="login" placeholder="Identifiant">
-<input id="password" type="password" placeholder="Mot de passe">
-<button onclick="login()">Connexion</button>
-</div>
+  <main class="card">
+    <section id="loginBox">
+      <h1>Master Score</h1>
 
-<div id="panel">
-<h2>Master Score</h2>
+      <form id="loginForm">
+        <input
+          id="loginInput"
+          type="text"
+          placeholder="Identifiant"
+          autocomplete="username"
+          required
+        >
 
-<select id="kingdomSelect"></select>
+        <input
+          id="passwordInput"
+          type="password"
+          placeholder="Mot de passe"
+          autocomplete="current-password"
+          required
+        >
 
-<p>Score actuel : <strong id="currentScore">0</strong></p>
+        <button type="submit">Connexion</button>
+      </form>
+    </section>
 
-<div class="row">
-<button onclick="addPoints(100)">+100</button>
-<button onclick="addPoints(1000)">+1000</button>
-<button onclick="addPoints(10000)">+10000</button>
-</div>
+    <section id="panel">
+      <h1>Master Score</h1>
 
-<input id="customPoints" type="number" placeholder="Valeur personnalisée">
-<button onclick="addCustom()">Ajouter</button>
+      <select id="kingdomSelect" aria-label="Choisir un royaume"></select>
 
-<p id="msg"></p>
-</div>
-</div>
+      <p>
+        Score actuel :
+        <strong id="currentScore">0 point</strong>
+      </p>
 
-<script>
-const SUPABASE_URL="https://vajvtuxjefyktalirqcf.supabase.co";
-const SUPABASE_KEY="sb_publishable_aG99lJA0pJtRgUKbP7GRBw_Xz-Mj6C_";
-const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+      <div class="row">
+        <button type="button" data-points="100">+100</button>
+        <button type="button" data-points="1000">+1 000</button>
+        <button type="button" data-points="10000">+10 000</button>
+      </div>
 
-const ADMIN_ID="Dieudesages";
-const ADMIN_PASSWORD="Tadé172107";
+      <form id="customForm">
+        <input
+          id="customPoints"
+          type="number"
+          step="1"
+          placeholder="Valeur personnalisée"
+          required
+        >
 
-let kingdoms=[];
+        <button type="submit">Ajouter les points</button>
+      </form>
 
-function login(){
- if(login.value===ADMIN_ID && password.value===ADMIN_PASSWORD){
-   loginBox.style.display="none";
-   panel.style.display="block";
-   loadKingdoms();
- }else alert("Identifiants incorrects");
-}
+      <button id="logoutButton" class="logout" type="button">
+        Déconnexion
+      </button>
+    </section>
 
-async function loadKingdoms(){
- const {data,error}=await supabaseClient.from("kingdoms").select("id,name,score");
- if(error){alert(error.message);console.error(error);return;}
- kingdoms=data.sort((a,b)=>a.id-b.id);
- kingdomSelect.innerHTML="";
- kingdoms.forEach(k=>{
-   kingdomSelect.innerHTML+=`<option value="${k.id}">${k.name}</option>`;
- });
- kingdomSelect.onchange=updateScore;
- updateScore();
-}
+    <p id="msg"></p>
+  </main>
 
-function updateScore(){
- const id=parseInt(kingdomSelect.value);
- const k=kingdoms.find(x=>x.id===id);
- if(!k)return;
- currentScore.textContent=k.score.toLocaleString("fr-FR")+" points";
-}
+  <script>
+    const SUPABASE_URL = "https://vajvtuxjefyktalirqcf.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_aG99lJA0pJtRgUKbP7GRBw_Xz-Mj6C_";
 
-async function addPoints(value){
- const id=parseInt(kingdomSelect.value);
- const k=kingdoms.find(x=>x.id===id);
- if(!k)return;
+    const ADMIN_ID = "Dieudesages";
+    const ADMIN_PASSWORD = "TON_MOT_DE_PASSE_ADMIN";
 
- const newScore=k.score+value;
+    const supabaseClient = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
 
- const {error}=await supabaseClient
- .from("kingdoms")
- .update({score:newScore})
- .eq("id",id);
+    const loginBox = document.querySelector("#loginBox");
+    const panel = document.querySelector("#panel");
+    const loginForm = document.querySelector("#loginForm");
+    const loginInput = document.querySelector("#loginInput");
+    const passwordInput = document.querySelector("#passwordInput");
 
- if(error){alert(error.message);return;}
+    const kingdomSelect = document.querySelector("#kingdomSelect");
+    const currentScore = document.querySelector("#currentScore");
+    const customForm = document.querySelector("#customForm");
+    const customPoints = document.querySelector("#customPoints");
+    const logoutButton = document.querySelector("#logoutButton");
+    const msg = document.querySelector("#msg");
+    const pointsButtons = document.querySelectorAll("[data-points]");
 
- k.score=newScore;
- updateScore();
- msg.textContent=`+${value} points ajoutés à ${k.name}`;
-}
+    let kingdoms = [];
 
-function addCustom(){
- const value=parseInt(customPoints.value);
- if(!value||value===0){alert("Entre une valeur");return;}
- addPoints(value);
- customPoints.value="";
-}
-</script>
+    function afficherMessage(texte = "", erreur = false) {
+      msg.textContent = texte;
+      msg.classList.toggle("error", erreur);
+    }
+
+    function bloquerBoutons(bloque) {
+      document.querySelectorAll("button").forEach(button => {
+        button.disabled = bloque;
+      });
+    }
+
+    function afficherScore() {
+      const kingdom = kingdoms.find(
+        kingdom => String(kingdom.id) === kingdomSelect.value
+      );
+
+      if (!kingdom) {
+        currentScore.textContent = "0 point";
+        return;
+      }
+
+      currentScore.textContent =
+        `${Number(kingdom.score).toLocaleString("fr-FR")} points`;
+    }
+
+    async function chargerRoyaumes() {
+      const { data, error } = await supabaseClient
+        .from("kingdoms")
+        .select("id, name, score")
+        .order("id");
+
+      if (error) {
+        throw error;
+      }
+
+      kingdoms = data || [];
+      kingdomSelect.replaceChildren();
+
+      kingdoms.forEach(kingdom => {
+        const option = document.createElement("option");
+        option.value = kingdom.id;
+        option.textContent = kingdom.name;
+        kingdomSelect.appendChild(option);
+      });
+
+      afficherScore();
+    }
+
+    async function ajouterPoints(valeur) {
+      const id = kingdomSelect.value;
+      const kingdom = kingdoms.find(
+        item => String(item.id) === id
+      );
+
+      if (!kingdom) {
+        afficherMessage("Choisis un royaume.", true);
+        return;
+      }
+
+      const points = Number(valeur);
+
+      if (!Number.isInteger(points) || points === 0) {
+        afficherMessage("Entre un nombre entier non nul.", true);
+        return;
+      }
+
+      const nouveauScore = Number(kingdom.score) + points;
+
+      bloquerBoutons(true);
+      afficherMessage();
+
+      const { error } = await supabaseClient
+        .from("kingdoms")
+        .update({ score: nouveauScore })
+        .eq("id", kingdom.id);
+
+      bloquerBoutons(false);
+
+      if (error) {
+        afficherMessage(`Erreur : ${error.message}`, true);
+        return;
+      }
+
+      kingdom.score = nouveauScore;
+      afficherScore();
+
+      afficherMessage(
+        `${points > 0 ? "+" : ""}${points.toLocaleString("fr-FR")} points ajoutés à ${kingdom.name}`
+      );
+    }
+
+    loginForm.addEventListener("submit", async event => {
+      event.preventDefault();
+
+      if (
+        loginInput.value.trim() !== ADMIN_ID ||
+        passwordInput.value !== ADMIN_PASSWORD
+      ) {
+        afficherMessage("Identifiants incorrects.", true);
+        return;
+      }
+
+      loginBox.style.display = "none";
+      panel.style.display = "block";
+      passwordInput.value = "";
+
+      bloquerBoutons(true);
+
+      try {
+        await chargerRoyaumes();
+        afficherMessage(
+          kingdoms.length
+            ? "Administration prête."
+            : "Aucun royaume trouvé."
+        );
+      } catch (error) {
+        afficherMessage(`Erreur Supabase : ${error.message}`, true);
+      } finally {
+        bloquerBoutons(false);
+      }
+    });
+
+    kingdomSelect.addEventListener("change", afficherScore);
+
+    pointsButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        ajouterPoints(button.dataset.points);
+      });
+    });
+
+    customForm.addEventListener("submit", event => {
+      event.preventDefault();
+
+      const valeur = customPoints.value;
+      customPoints.value = "";
+
+      ajouterPoints(valeur);
+    });
+
+    logoutButton.addEventListener("click", () => {
+      panel.style.display = "none";
+      loginBox.style.display = "block";
+      loginInput.value = "";
+      passwordInput.value = "";
+      afficherMessage();
+    });
+  </script>
 </body>
 </html>
