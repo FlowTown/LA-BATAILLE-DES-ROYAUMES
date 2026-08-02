@@ -78,6 +78,16 @@
     .kingdom-logo img { width:100%; height:100%; max-width:100%; object-fit:contain; object-position:center; transform:none; }
     .kingdom-card.is-leader { background:linear-gradient(145deg,rgba(255,223,123,.36),rgba(79,43,4,.79) 53%,rgba(239,180,54,.22)); }
     .kingdom-card.is-leader .kingdom-logo { background:#050505; }
+      /* Ajustements optiques : les PNG n'ont pas tous les mêmes marges transparentes */
+    [data-kingdom="Alcarah"] .kingdom-logo img { transform:translateY(-7px); }
+    [data-kingdom="Augustus Nubium Mundus"] .kingdom-logo img { transform:translateY(-8px); }
+    [data-kingdom="Baldezor"] .kingdom-logo img { transform:translateY(-14px); }
+    [data-kingdom="Lunerei"] .kingdom-logo img { transform:translate(5px,-14px); }
+    [data-kingdom="Sappheiros"] .kingdom-logo img { transform:translate(-4px,-14px); }
+    [data-kingdom="Les Terres de Sang"] .kingdom-logo img { transform:translate(-5px,-14px); }
+    [data-kingdom="Témeriah"] .kingdom-logo img { transform:translateY(-9px); }
+    .kingdom-card.is-leader .kingdom-logo { background:radial-gradient(circle at 50% 35%,#fffdf2,#f4dfad 66%,#ba7c22); }
+    .kingdom-card.is-leader { background:radial-gradient(circle at 50% 12%,rgba(255,246,188,.32),transparent 34%),linear-gradient(145deg,rgba(255,223,123,.42),rgba(105,61,8,.78) 56%,rgba(242,183,56,.27)); }
   </style>
 </head>
 <body>
