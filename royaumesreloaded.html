@@ -69,6 +69,10 @@
     .kingdom-card.is-leader::after { content:"✦  ♛  ✦"; position:absolute; inset:9px 10px auto; z-index:3; color:#fff0ae; font-family:Cinzel,serif; font-size:.86rem; letter-spacing:.55em; text-shadow:0 0 12px #f6bf42; pointer-events:none; }
     .kingdom-card.is-leader .kingdom-logo { margin-top:17px; border-color:#fff0ad; box-shadow:0 0 0 4px rgba(235,177,51,.36),0 0 23px rgba(255,220,111,.8),0 10px 18px rgba(0,0,0,.4); }
     .kingdom-card.is-leader .kingdom-name { color:#ffe9a4; text-shadow:0 0 18px rgba(255,205,77,.88); }
+      /* Cadrage homogène des blasons et carte gagnante */
+    .kingdom-logo { padding:0; }
+    .kingdom-logo img { width:118%; height:118%; max-width:none; flex:none; object-fit:contain; object-position:center; transform:translateZ(0); }
+    .kingdom-card.is-leader { background:radial-gradient(circle at 50% 18%,rgba(135,95,23,.32),transparent 43%),linear-gradient(155deg,#15110b 0%,#020202 54%,#191106 100%); }
   </style>
 </head>
 <body>
