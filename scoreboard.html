@@ -565,6 +565,23 @@
     .refresh-badge { border-color:rgba(255,221,142,.27); background:rgba(255,223,150,.07); color:#e8d2a0; }
     .ranking-item { border-color:rgba(255,224,151,.18); background:linear-gradient(155deg,rgba(255,224,151,.11),rgba(24,14,5,.52) 62%); } .rank-logo { background:#fff9ea; border:1px solid rgba(242,203,113,.78); } .rank-name { font-size:.95rem; }
     .footer { padding:0 5px; color:#dbcdb5; } .footer strong { color:#ffe29a; }
+      /* Blasons : davantage de présence, moins de cadre */
+    .leader-medallion { width:min(56%,300px); padding:12px; }
+    .leader-logo { width:108%; height:108%; max-width:none; }
+    .ranking-item { grid-template-columns:58px 64px minmax(0,1fr) 96px; padding:8px 14px; }
+    .rank-logo { width:60px; height:60px; padding:0; border:0; background:transparent; border-radius:0; }
+    .rank-logo img { width:100%; height:100%; max-width:none; object-fit:contain; object-position:center; }
+    .ranking-item[data-name="Augustus Nubium Mundus"] .rank-logo img { transform:translateY(-7px) scale(1.12); }
+    .ranking-item[data-name="Baldezor"] .rank-logo img { transform:translateY(-10px) scale(1.10); }
+    .ranking-item[data-name="Lunerei"] .rank-logo img { transform:translate(4px,-10px) scale(1.10); }
+    .ranking-item[data-name="Sappheiros"] .rank-logo img { transform:translate(-3px,-10px) scale(1.10); }
+    .ranking-item[data-name="Les Terres de Sang"] .rank-logo img { transform:translate(-4px,-10px) scale(1.10); }
+    .ranking-item[data-name="Témeriah"] .rank-logo img { transform:translateY(-7px) scale(1.10); }
+    .ranking-item[data-name="Alcarah"] .rank-logo img { transform:translateY(-5px) scale(1.08); }
+    /* Paillettes mobiles en arrière-plan */
+    body::after { content:""; position:fixed; inset:-20%; z-index:0; pointer-events:none; opacity:.62; background-image:radial-gradient(circle,rgba(255,239,181,.92) 0 1px,transparent 1.8px),radial-gradient(circle,rgba(224,177,75,.85) 0 1.3px,transparent 2px),radial-gradient(circle,rgba(255,255,255,.75) 0 .8px,transparent 1.6px); background-size:173px 173px,241px 241px,97px 97px; background-position:20px 45px,88px 13px,35px 80px; animation:goldDustDrift 19s linear infinite; }
+    .screen { z-index:1; }
+    @keyframes goldDustDrift { from { transform:translate3d(-1%,-1%,0); } 50% { transform:translate3d(2%,1.5%,0); } to { transform:translate3d(-1%,-1%,0); } }
   </style>
 </head>
 <body>
