@@ -589,7 +589,7 @@
     .leader-middle { flex:initial; min-height:0; padding:0; }
     .leader-medallion { width:min(58%,220px); padding:10px; border-radius:24px; }
     .leader-medallion::after { font-size:.62rem; top:8px; }
-    .leader-logo { width:100%; height:100%; max-width:100%; }
+    .leader-logo { width:100%; height:100%; max-width:100%; transform-origin:center; }
     .leader-bottom { gap:3px; padding:12px 12px 10px; border-top:1px solid rgba(255,228,151,.3); border-bottom:1px solid rgba(255,228,151,.15); background:linear-gradient(90deg,transparent,rgba(255,221,135,.1),transparent); }
     .leader-name { font-size:clamp(1.9rem,2.8vw,2.65rem); line-height:1.06; }
     .leader-score { font-size:clamp(2.7rem,4.25vw,4rem); line-height:1; }
@@ -737,6 +737,19 @@
       };
       return positions[name] || "scale(1.28)";
     }
+    function leaderLogoStyle(name) {
+      const positions = {
+        "Alcarah": "translate(0,-14px) scale(1.05)",
+        "Augustus Nubium Mundus": "translate(0,-31px) scale(1.10)",
+        "Baldezor": "translate(0,-45px) scale(1.08)",
+        "Lunerei": "translate(10px,-32px) scale(1.08)",
+        "Sappheiros": "translate(-8px,-32px) scale(1.08)",
+        "Les Terres de Sang": "translate(-5px,-32px) scale(1.06)",
+        "Les Ombres de Grimelfe": "translate(0,-22px) scale(1.06)",
+        "Témeriah": "translate(0,-28px) scale(1.07)"
+      };
+      return positions[name] || "scale(1.05)";
+    }
     function renderRanking(sortedData) {
       if (!sortedData || !sortedData.length) {
         rankingList.innerHTML = "";
@@ -754,6 +767,7 @@
       leaderName.style.color = leaderAsset.color;
       showGoldLeaderLogo(leaderLogo, leaderAsset.logo);
       leaderLogo.alt = leader.name;
+      leaderLogo.style.transform = leaderLogoStyle(leader.name);
 
       if (firstRender) {
         leaderScore.textContent = `${leader.score} pts`;
