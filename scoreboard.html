@@ -545,13 +545,33 @@
         min-height:74px;
       }
     }
+      /* Direction visuelle La Nuit Magique — or profond */
+    :root { --text:#fff8e9; --muted:#dbcdb5; --gold:#e8bd61; --gold-soft:#ffe29a; --line:rgba(230,190,105,.26); --panel:linear-gradient(145deg,rgba(84,49,13,.72),rgba(28,16,5,.82)); --shadow:0 28px 70px rgba(0,0,0,.42); }
+    body { background:radial-gradient(ellipse at 50% -12%,#71491d 0%,transparent 38%),radial-gradient(circle at 8% 28%,rgba(202,146,47,.15),transparent 25%),radial-gradient(circle at 94% 65%,rgba(202,146,47,.12),transparent 28%),linear-gradient(150deg,#120b05 0%,#271706 48%,#100b06 100%); }
+    body::before { opacity:.28; background-image:radial-gradient(#fff6d5 1px,transparent 1.5px),radial-gradient(#d7a948 1px,transparent 1.5px); background-size:92px 92px,137px 137px; background-position:8px 22px,65px 71px; }
+    .screen { width:min(1500px,100%); margin:auto; padding:26px 30px 20px; }
+    .topbar { align-items:center; padding:2px 4px 18px; border-bottom:1px solid var(--line); }
+    .title-wrap { align-items:center; } .title-wrap img { width:108px; height:108px; filter:drop-shadow(0 10px 20px rgba(0,0,0,.58)); }
+    .eyebrow { color:#f8d77e; } h1 { color:#fff7e5; text-shadow:0 2px 0 #5f3d12,0 0 28px rgba(229,180,73,.2); }
+    .top-right { padding:14px 18px; border:1px solid rgba(255,221,142,.25); border-radius:18px; background:rgba(255,223,150,.06); }
+    .panel { border:1px solid var(--line); background:var(--panel); box-shadow:inset 0 1px rgba(255,240,202,.1),var(--shadow); }
+    .leader-panel { border:2px solid #efc969; background:radial-gradient(circle at 50% 18%,rgba(255,245,181,.28),transparent 33%),linear-gradient(145deg,rgba(255,223,123,.30),rgba(82,45,5,.82) 55%,rgba(239,180,54,.18)); box-shadow:inset 0 0 0 2px rgba(255,250,217,.22),inset 0 0 50px rgba(255,211,92,.13),0 0 0 4px rgba(172,111,22,.30),0 0 35px rgba(255,200,64,.35),0 22px 45px rgba(0,0,0,.38); }
+    .leader-panel::after { background:radial-gradient(circle at 50% 44%,rgba(255,223,117,.2),transparent 36%); }
+    .leader-top .small,.leader-line { color:#ffe29a; } .leader-top h2 { color:#fff6df; }
+    .leader-medallion { background:radial-gradient(circle at 50% 35%,#fffdf2,#f4dfad 66%,#ba7c22); border:2px solid #fff0ad; box-shadow:0 0 0 5px rgba(235,177,51,.31),0 0 28px rgba(255,220,111,.58),0 18px 34px rgba(0,0,0,.32); }
+    .leader-medallion::after { content:'✦  ♛  ✦'; position:absolute; top:10px; left:0; right:0; color:#a76c16; font-family:Cinzel,serif; font-size:.78rem; letter-spacing:.55em; text-shadow:0 0 8px rgba(255,255,255,.9); }
+    .leader-logo { z-index:2; } .leader-name { color:#ffe9a4 !important; text-shadow:0 0 18px rgba(255,205,77,.7); } .leader-score { color:#ffe29a; }
+    .ranking-panel { background:linear-gradient(145deg,rgba(73,43,12,.74),rgba(24,14,5,.84)); } .ranking-head h2 { color:#f8d77e; }
+    .refresh-badge { border-color:rgba(255,221,142,.27); background:rgba(255,223,150,.07); color:#e8d2a0; }
+    .ranking-item { border-color:rgba(255,224,151,.18); background:linear-gradient(155deg,rgba(255,224,151,.11),rgba(24,14,5,.52) 62%); } .rank-logo { background:#fff9ea; border:1px solid rgba(242,203,113,.78); } .rank-name { font-size:.95rem; }
+    .footer { padding:0 5px; color:#dbcdb5; } .footer strong { color:#ffe29a; }
   </style>
 </head>
 <body>
   <div class="screen">
     <div class="topbar">
       <div class="title-wrap">
-        <img src="Asset%201.svg" alt="Logo La Nuit Magique">
+        <img src="LOGO%20NM%202026%20gold%20vf.png" alt="Logo La Nuit Magique">
         <div>
           <div class="eyebrow">Écran live</div>
           <h1>La Bataille des Royaumes</h1>
@@ -665,6 +685,16 @@
       el.classList.add(className);
     }
 
+    function showGoldLeaderLogo(image, normalSource) {
+      const decoded = decodeURIComponent(normalSource);
+      const dot = decoded.lastIndexOf('.');
+      if (dot < 1) { image.src = normalSource; return; }
+      const stem = decoded.slice(0, dot), extension = decoded.slice(dot);
+      const candidates = [`${stem}_gold${extension}`, `${stem}-gold${extension}`, `${stem} gold${extension}`, `${stem}_Gold${extension}`, `${stem}-Gold${extension}`, `${stem} Gold${extension}`];
+      let index = 0;
+      image.onerror = () => { index += 1; if (index < candidates.length) image.src = encodeURI(candidates[index]); else { image.onerror = null; image.src = normalSource; } };
+      image.src = encodeURI(candidates[index]);
+    }
     function renderRanking(sortedData) {
       if (!sortedData || !sortedData.length) {
         rankingList.innerHTML = "";
@@ -680,7 +710,7 @@
 
       leaderName.textContent = leader.name;
       leaderName.style.color = leaderAsset.color;
-      leaderLogo.src = leaderAsset.logo;
+      showGoldLeaderLogo(leaderLogo, leaderAsset.logo);
       leaderLogo.alt = leader.name;
 
       if (firstRender) {
@@ -752,6 +782,10 @@
     }
 
     loadScores();
+    supabaseClient
+      .channel("scoreboard-kingdoms")
+      .on("postgres_changes", { event: "*", schema: "public", table: "kingdoms" }, loadScores)
+      .subscribe();
     setInterval(loadScores, 5000);
   </script>
 </body>
