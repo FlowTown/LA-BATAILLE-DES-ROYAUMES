@@ -712,6 +712,19 @@
       image.onerror = () => { index += 1; if (index < candidates.length) image.src = encodeURI(candidates[index]); else { image.onerror = null; image.src = normalSource; } };
       image.src = encodeURI(candidates[index]);
     }
+    function rankLogoStyle(name) {
+      const positions = {
+        "Alcarah": "translate(0,-7px) scale(1.28)",
+        "Augustus Nubium Mundus": "translate(0,-9px) scale(1.32)",
+        "Baldezor": "translate(0,-14px) scale(1.33)",
+        "Lunerei": "translate(6px,-15px) scale(1.32)",
+        "Sappheiros": "translate(-5px,-15px) scale(1.32)",
+        "Les Terres de Sang": "translate(-4px,-15px) scale(1.30)",
+        "Les Ombres de Grimelfe": "translate(0,-9px) scale(1.30)",
+        "Témeriah": "translate(0,-12px) scale(1.30)"
+      };
+      return positions[name] || "scale(1.28)";
+    }
     function renderRanking(sortedData) {
       if (!sortedData || !sortedData.length) {
         rankingList.innerHTML = "";
@@ -749,7 +762,7 @@
           <article class="ranking-item ${asset.cls}" data-name="${row.name}" data-score="${row.score}">
             <div class="rank-num">#${displayRank}</div>
             <div class="rank-logo">
-              <img src="${asset.logo}" alt="${row.name}">
+              <img src="${asset.logo}" alt="${row.name}" style="transform:${rankLogoStyle(row.name)}">
             </div>
             <div class="rank-name">
               <span style="color:${asset.color};">${row.name}</span>
