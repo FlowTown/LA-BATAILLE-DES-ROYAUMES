@@ -55,6 +55,20 @@
     .success-message { display:none; position:fixed; inset:0; z-index:50; align-items:center; justify-content:center; padding:20px; background:rgba(11,6,2,.75); backdrop-filter:blur(8px); } .success-message.active { display:flex; } .success-box { width:min(440px,100%); padding:32px 26px; text-align:center; border:1px solid #e8bd61; border-radius:25px; background:linear-gradient(145deg,#523111,#1d1004); box-shadow:0 24px 80px #000; } .success-icon { font-size:2.6rem; } .success-box h4 { margin:8px 0; } .success-box p { color:var(--muted); font-size:1.08rem; }
     @media (max-width:1000px) { .kingdom-grid { grid-template-columns:repeat(2,1fr); } .request-layout { grid-template-columns:1fr; } }
     @media (max-width:600px) { .container { width:min(100% - 20px,1220px); } .topbar { padding:10px 0; } .topbar .button { display:none; } .hero { padding:48px 0 35px; } .hero p { font-size:1.08rem; } .kingdom-grid { grid-template-columns:1fr; } .kingdom-card { min-height:260px; } .panel { padding:20px; } }
+      /* Ajustements de classement */
+    .brand img { width:72px; height:72px; }
+    .hero-logo { width:min(360px,78vw); max-height:255px; margin-bottom:12px; }
+    .hero h2 { max-width:760px; font-size:clamp(1.9rem,4.8vw,4.25rem); line-height:1.08; }
+    .kingdom-card > :first-child { width:100%; }
+    .kingdom-logo { margin-inline:auto; }
+    .kingdom-logo img { object-position:center; }
+    .kingdom-name { margin-inline:auto; color:var(--accent); text-shadow:0 0 16px color-mix(in srgb,var(--accent) 35%,transparent); }
+    [data-kingdom="Alcarah"] { --accent:#62ec9f; } [data-kingdom="Augustus Nubium Mundus"] { --accent:#f0ca7c; } [data-kingdom="Baldezor"] { --accent:#ff8b8b; } [data-kingdom="Les Ombres de Grimelfe"] { --accent:#f0f0f0; } [data-kingdom="Lunerei"] { --accent:#df7ea8; } [data-kingdom="Sappheiros"] { --accent:#98d1ff; } [data-kingdom="Les Terres de Sang"] { --accent:#c39aff; } [data-kingdom="Témeriah"] { --accent:#ffc17f; }
+    .kingdom-card.is-leader { border:2px solid #ffe69b; background:linear-gradient(145deg,rgba(255,223,123,.36),rgba(79,43,4,.79) 53%,rgba(239,180,54,.22)); box-shadow:inset 0 0 0 2px rgba(255,250,217,.26),inset 0 0 42px rgba(255,211,92,.28),0 0 0 4px rgba(172,111,22,.48),0 0 34px rgba(255,200,64,.7),0 18px 36px rgba(0,0,0,.34); }
+    .kingdom-card.is-leader::before { opacity:.3; background:radial-gradient(circle at 50% 12%,#fff3b6,transparent 38%),radial-gradient(circle at 10% 90%,#d59c2e,transparent 35%),radial-gradient(circle at 90% 90%,#d59c2e,transparent 35%); }
+    .kingdom-card.is-leader::after { content:"✦  ♛  ✦"; position:absolute; inset:9px 10px auto; z-index:3; color:#fff0ae; font-family:Cinzel,serif; font-size:.86rem; letter-spacing:.55em; text-shadow:0 0 12px #f6bf42; pointer-events:none; }
+    .kingdom-card.is-leader .kingdom-logo { margin-top:17px; border-color:#fff0ad; box-shadow:0 0 0 4px rgba(235,177,51,.36),0 0 23px rgba(255,220,111,.8),0 10px 18px rgba(0,0,0,.4); }
+    .kingdom-card.is-leader .kingdom-name { color:#ffe9a4; text-shadow:0 0 18px rgba(255,205,77,.88); }
   </style>
 </head>
 <body>
@@ -79,7 +93,37 @@
     const SUPABASE_URL='https://vajvtuxjefyktalirqcf.supabase.co',SUPABASE_KEY='sb_publishable_aG99lJA0pJtRgUKbP7GRBw_Xz-Mj6C_'; const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
     const $=id=>document.getElementById(id),action=$('action'),custom=$('customFields'),success=$('successMessage');
     function toggleCustom(){custom.classList.toggle('active',action.value.includes('personnalisée'));} action.addEventListener('change',toggleCustom);
-    async function loadScores(){const {data,error}=await supabaseClient.from('kingdoms').select('name, score');if(error){console.error('Erreur chargement scores:',error);return;} const grid=$('kingdomGrid');[...data].sort((a,b)=>b.score-a.score||a.name.localeCompare(b.name)).forEach((row,index)=>{const card=document.querySelector(`[data-kingdom="${row.name}"]`);if(!card)return;card.querySelector('.kingdom-score').textContent=row.score;card.querySelector('.rank').textContent=`#${index+1} au classement`;grid.append(card);});}
+    function resetLeader(card) {
+      card.classList.remove('is-leader');
+      const image = card.querySelector('.kingdom-logo img');
+      if (image && image.dataset.normalSrc) { image.onerror = null; image.src = image.dataset.normalSrc; }
+    }
+    function showGoldLogo(card) {
+      const image = card.querySelector('.kingdom-logo img');
+      if (!image) return;
+      const normal = image.dataset.normalSrc || image.getAttribute('src');
+      image.dataset.normalSrc = normal;
+      const decoded = decodeURIComponent(normal), dot = decoded.lastIndexOf('.');
+      if (dot < 1) return;
+      const stem = decoded.slice(0, dot), extension = decoded.slice(dot);
+      const candidates = [`${stem}_gold${extension}`, `${stem}-gold${extension}`, `${stem} gold${extension}`, `${stem}_Gold${extension}`, `${stem}-Gold${extension}`, `${stem} Gold${extension}`];
+      let index = 0;
+      image.onerror = () => { index += 1; if (index < candidates.length) image.src = encodeURI(candidates[index]); else { image.onerror = null; image.src = normal; } };
+      image.src = encodeURI(candidates[index]);
+    }
+    async function loadScores(){
+      const {data,error}=await supabaseClient.from('kingdoms').select('name, score');
+      if(error){console.error('Erreur chargement scores:',error);return;}
+      const grid=$('kingdomGrid'), cards=[...document.querySelectorAll('.kingdom-card')];
+      cards.forEach(resetLeader);
+      [...data].sort((a,b)=>b.score-a.score||a.name.localeCompare(b.name)).forEach((row,index)=>{
+        const card=document.querySelector(`[data-kingdom="${row.name}"]`); if(!card)return;
+        card.querySelector('.kingdom-score').textContent=row.score;
+        card.querySelector('.rank').textContent=`#${index+1} au classement`;
+        grid.append(card);
+        if(index===0){ card.classList.add('is-leader'); showGoldLogo(card); }
+      });
+    }
     async function submit(){const isCustom=action.value.includes('personnalisée'), payload={visitor_name:$('nom').value.trim(),visitor_email:$('email').value.trim()||null,kingdom_name:$('royaume').value,action_label:action.value,custom_description:isCustom?$('customAction').value.trim()||null:null,requested_points:isCustom?Number($('customPoints').value)||null:null,proof_text:$('preuve').value.trim()||null};if(!payload.visitor_name)return alert('Merci d’indiquer un nom ou pseudo.');if(isCustom&&!payload.custom_description)return alert('Décris l’action personnalisée.');if(isCustom&&!payload.requested_points)return alert('Indique le nombre de points demandés.');const {error}=await supabaseClient.from('point_requests').insert(payload);if(error){console.error(error);return alert('Erreur lors de l’envoi de la demande.');}$('nom').value=$('email').value=$('preuve').value=$('customAction').value=$('customPoints').value='';action.selectedIndex=0;toggleCustom();success.classList.add('active');}
     $('sendRequestBtn').addEventListener('click',submit);$('refreshScoresBtn').addEventListener('click',loadScores);$('closeSuccessMessage').addEventListener('click',()=>success.classList.remove('active'));success.addEventListener('click',e=>{if(e.target===success)success.classList.remove('active');});toggleCustom();loadScores();
   </script>
