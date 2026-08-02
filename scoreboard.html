@@ -594,6 +594,10 @@
     .leader-name { font-size:clamp(1.9rem,2.8vw,2.65rem); line-height:1.06; }
     .leader-score { font-size:clamp(2.7rem,4.25vw,4rem); line-height:1; }
     @media (max-width:1280px) { .main { grid-template-columns:1fr; } .leader-medallion { width:min(50%,220px); } }
+      /* Couronne décorative du Royaume gagnant */
+    .leader-middle { position:relative; overflow:visible; }
+    .leader-medallion::after { content:none; }
+    .leader-middle::before { content:"✦  ♛  ✦"; position:absolute; left:50%; top:-34px; z-index:5; transform:translateX(-50%); width:max-content; padding:4px 22px 7px; border-bottom:1px solid rgba(255,237,163,.8); color:#fff0a8; font-family:Cinzel,serif; font-size:1.55rem; line-height:1; letter-spacing:.68em; text-indent:.68em; text-shadow:0 0 8px #b97919,0 0 18px rgba(255,215,106,.9); background:radial-gradient(ellipse at center,rgba(255,221,120,.26),transparent 70%); }
   </style>
 </head>
 <body>
